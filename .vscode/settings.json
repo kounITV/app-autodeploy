@@ -1,0 +1,83 @@
+{
+    "cSpell.words": [
+        "ກະລຸນາເລືອກປະເພດ",
+        "ກັບຄືນ",
+        "ແກ້ໄຂຂໍ້ມູນຕຳແໜ່ງສໍາເລັດ",
+        "ຄວາມຍາວບໍ່ເກີດ",
+        "ງແຟ້ມກັບຄືນສໍາເລັດ",
+        "ງຢືນຮັບເງິນ",
+        "ງເອກກະສານກັບຄືນ",
+        "ຈໍານວນຟອມ",
+        "ຈໍານວນຟອມຕ້ອງມີຢ່າງໜ້ອຍ",
+        "ສາຂາ",
+        "ສ້າງແຟ້ມເອກກະສານສໍາເລັດ",
+        "ສ້າງຢືນຢັນວ່າໄດ້ຮັບເງິນ",
+        "ສາມາດສ້າງແຟ້ມເອກກະສານ",
+        "ສາມາດສົ",
+        "ຍອດເງິນ",
+        "ຕ້ອງມີຢ່າງໜ້ອຍໜຶ່ງແຖວ",
+        "ຕົວເລກບໍ່ສາມາດຂຶ້ນຕົ້ນດ້ວຍ",
+        "ຖາຍຮູບພາບ",
+        "ທ່ານບໍ",
+        "ນບຸກຄົນດ້ວຍບາໂຄດ",
+        "ນີ້ແມ່ນລາຍການຂໍ້ມູນຂໍຄືນເງິນ",
+        "ບັນຈຸຢູ່ສາຂາໃດ",
+        "ບັນຊີ",
+        "ແບບຟອມ",
+        "ແບບຟອມຜູ່ຂໍອອກບັດພັກເຊົາຊົ່ວຄາວ",
+        "ປະເພດປະເພດບັດຕ້ອງບໍ່ຊໍ້າກັນ",
+        "ແຟ້ມທີ",
+        "ແຟ້ມເລກທີ",
+        "ແຟ້ມເອກກະສານ",
+        "ມຄອງການເງິນ",
+        "ມຄອງແຟ້ມ",
+        "ມູເມືອງສໍາເລັດ",
+        "ມູເມືອງໄດ້",
+        "ລວມຍອດເງິນ",
+        "ລະຫັດບັດ",
+        "ລະຫັດລາຄາ",
+        "ລັດຖະບານ",
+        "ລາຍການຫຼ້າສຸດ",
+        "ລາຍລະອຽດ",
+        "ວັນທີເດືອນປີ",
+        "ໜ້າຫຼ",
+        "ເຫດຜົນ",
+        "ເຫດຜົນທິ",
+        "ເຫດຜົນທີ່ຂື້ນບັນຊີດໍາ",
+        "ເຫດຜົນທີ່ສົ່ງແຟ້ມເອກກະສານກັບ"
+    ]
+} // {
+//     "spellright.language": [
+//         "en"
+//     ],
+//     "spellright.documentTypes": [
+//         "latex",
+//         "plaintext"
+//     ],
+//     "editor.defaultFormatter": "esbenp.prettier-vscode",
+//     // "editor.formatOnSave": true,
+//     "editor.codeActionsOnSave": {
+//         "source.fixAll.eslint": "explicit",
+//         "source.organizeImports": "explicit"
+//     },
+//     "eslint.validate": [
+//         "javascript",
+//         "javascriptreact",
+//         "typescript",
+//         "typescriptreact"
+//     ],
+//     "typescript.tsdk": "node_modules/typescript/lib",
+//     "typescript.enablePromptUseWorkspaceTsdk": true,
+//     "[typescript]": {
+//         "editor.defaultFormatter": "vscode.typescript-language-features"
+//     },
+//     "[typescriptreact]": {
+//         "editor.defaultFormatter": "vscode.typescript-language-features"
+//     },
+//     "[javascript]": {
+//         "editor.defaultFormatter": "esbenp.prettier-vscode"
+//     },
+//     "[javascriptreact]": {
+//         "editor.defaultFormatter": "esbenp.prettier-vscode"
+//     }
+// }

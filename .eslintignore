@@ -1,0 +1,11 @@
+next.config.js
+tailwind.config.js
+postcss.config.js
+next-env.d.ts
+*.stories.tsx
+./node_modules/*
+node_modules/*
+src/shadcn/*
+node_modules
+./node_modules
+./node_modules/@refinedev/*
