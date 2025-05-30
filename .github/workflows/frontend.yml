@@ -28,12 +28,7 @@ jobs:
           cache: npm
 
       - name: Install dependencies
-        run: |
-          npm install -g husky
-          npm install
-
-      - name: Lint
-        run: npm run lint
+        run: npm ci
 
       - name: Build
         run: npm run build
