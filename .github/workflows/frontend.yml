@@ -27,13 +27,10 @@ jobs:
           node-version: 20
           cache: npm
 
-      - name: Install dependencies
-        run: npm install --legacy-peer-deps
-
-      # Optional: Run husky install only if husky is present and you want to enable git hooks in CI
-      # Comment this out or remove if not needed
-      #- name: Setup husky
-      #  run: npx husky install
+      - name: Install dependencies and setup husky
+        run: |
+          npm ci
+          npx husky install
 
       - name: Lint with ESLint
         run: npx eslint . --ext .ts,.tsx,.js,.jsx
