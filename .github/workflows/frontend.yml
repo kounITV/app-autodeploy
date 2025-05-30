@@ -30,10 +30,10 @@ jobs:
       - name: Install dependencies
         run: |
           npm install -g husky
-          npm install
+          npm install --legacy-peer-deps
 
-      - name: Lint
-        run: npm run lint
+      - name: Lint with ESLint
+        run: npx eslint . --ext .ts,.tsx,.js,.jsx
 
       - name: Build
         run: npm run build
