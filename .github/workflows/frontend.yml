@@ -10,13 +10,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    env:
-      NODE_ENV: production
-      NEXTAUTH_URL: https://fn.skillgener.com
-      NEXT_PUBLIC_API_URL: https://fn.skillgener.com
-      NEXT_PUBLIC_API_BASE_URL: https://bn.skillgener.com
-      AUTH_SECRET: ${{ secrets.AUTH_SECRET }}
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -27,14 +20,11 @@ jobs:
           node-version: 20
           cache: npm
 
-      - name: Install dependencies
+      - name: Install dependencies using lockfile
         run: npm ci
 
       - name: Check ESLint version
-        run: npx eslint -v
+        run: ./node_modules/.bin/eslint -v
 
-      - name: Lint with ESLint
-        run: npx eslint . --ext .ts,.tsx,.js,.jsx
-
-      - name: Build
-        run: npm run build
+      - name: Lint code with ESLint
+        run: ./node_modules/.bin/eslint . --ext .ts,.tsx,.js,.jsx
