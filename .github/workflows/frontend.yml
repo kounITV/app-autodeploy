@@ -18,22 +18,22 @@ jobs:
       AUTH_SECRET: ${{ secrets.AUTH_SECRET }}
 
     steps:
-      - name: ⬇️ Checkout repository
+      - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: 🟢 Setup Node.js
+      - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 20
           cache: npm
 
-      - name: 📦 Install dependencies
+      - name: Install dependencies
         run: |
           npm install -g husky
           npm install
 
-      - name: 🔍 Lint
-        run: npm run lint
+      - name: Lint
+        run: npx eslint . --ext .ts,.tsx,.js,.jsx
 
-      - name: 🛠️ Build
+      - name: Build
         run: npm run build
