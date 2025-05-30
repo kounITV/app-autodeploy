@@ -9,6 +9,7 @@ import { useProfileList } from "../hook/useProfile";
 import { type IAggregationChartProfile } from "../type";
 import { BarChartAggregationProfile } from "./chart";
 import { NewProfile } from "./newProfile";
+import { Spinner } from "@/components/ui";
 
 export default function ProfileDashboard() {
   const aggregation = useAggregationUser();
@@ -17,10 +18,10 @@ export default function ProfileDashboard() {
   return (
     <>
       <div className='grid gap-4 sm:grid-cols-2 lg:grid-cols-4'>
-        <AggregationCard value={aggregation?.male || 0} title="ຜູ້ຊາຍ" icon={<UserPlus color="blue" />} />
-        <AggregationCard value={aggregation?.female || 0} title="ຜູ້ຍິງ" icon={<User />} />
-        <AggregationCard value={aggregation?.total || 0} title="ຍອດລວມ" icon={<Users color="purple" />} />
-        <AggregationCard value={aggregation?.newProfilesCount || 0} title="ໃຫມ່ໃນທີດນີ້" icon={<UserCheck color="yellow" />} />
+        <AggregationCard value={aggregation.loading ? <Spinner size={"medium"}/> : aggregation?.male || 0 } title="ຜູ້ຊາຍ" icon={<UserPlus color="blue" />} />
+        <AggregationCard value={aggregation.loading ? <Spinner size={"medium"}/> : aggregation?.female || 0 } title="ຜູ້ຍິງ" icon={<User />} />
+        <AggregationCard value={aggregation.loading ? <Spinner size={"medium"}/> : aggregation?.total || 0 } title="ຍອດລວມ" icon={<Users color="purple" />} />
+        <AggregationCard value={aggregation.loading ? <Spinner size={"medium"}/> : aggregation?.newProfilesCount || 0 } title="ໃຫມ່ໃນທີດນີ້" icon={<UserCheck color="yellow" />} />
       </div>
       <div className='grid grid-cols-1 gap-4 lg:grid-cols-7 mt-4'>
         <BarChartAggregationProfile data={result as unknown as IAggregationChartProfile[]} />

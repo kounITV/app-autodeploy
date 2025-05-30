@@ -51,7 +51,7 @@ const FinanceForm: React.FC<FinanceFormProps> = ({ form, onSubmit, amount }) => 
               <Form.Input.Input placeholder="00001" />
             </Form.Field>
             <Form.Field name="receiptImage" control={form.control} label="ຮູບໃບຮັບເງິນ" required={false}>
-              <Form.Input.Image
+              <Form.Input.ImageWithDrag
                 placeholder="ຮູບໃບຮັບເງິນ"
                 className="flex w-full h-auto items-center justify-center rounded-lg border border-dashed bg-muted"
               />

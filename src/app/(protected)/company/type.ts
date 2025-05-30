@@ -3,6 +3,7 @@ export interface ICompany {
     no: number;
     name: string;
     businessCode: string;
+    businessType: string,
     businessRegisterBy: string;
     createdAt: string;
     updatedAt: string;
@@ -28,4 +29,3 @@ export interface ICompanyAggregation {
         total: number;
     };
 }
-

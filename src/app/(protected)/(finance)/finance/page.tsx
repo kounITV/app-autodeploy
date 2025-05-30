@@ -7,14 +7,14 @@ import { columnsFinance } from "./container/columns";
 import useFinanceTable from "./hook/useTable";
 
 export default function FinanceList() {
-  const { result, meta, updatePagination } = useFinanceTable();
+  const { result, meta, updatePagination, loading } = useFinanceTable();
   return (
     <div className="pl-4 space-y-2">
       <div className="flex justify-between items-center">
         <TitleLabel title='ຄຸ້ມຄອງການເງິນ' subtitle='ນີ້ແມ່ນລາຍການຂໍ້ມູນການເງິນ!' />
       </div>
       <div className="space-y-4">
-        <DataTable columns={columnsFinance} data={result} meta={meta} updatePagination={updatePagination} />
+        <DataTable columns={columnsFinance} data={result} meta={meta} updatePagination={updatePagination} loading={loading} />
       </div>
     </div>
   );

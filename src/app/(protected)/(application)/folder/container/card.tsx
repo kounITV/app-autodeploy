@@ -70,7 +70,7 @@ export function FolderCardView({ folder, action, status, showReject = false }: F
           </div>
           <div className="flex gap-x-2 text-sm text-gray-500">
             <span>ແຟ້ມເລກທີ: {folder?.code}</span>
-            <span>{formatDate({ date: folder?.createdAt })}</span>
+            <span>ສ້າງວັນທີ: {formatDate({ date: folder?.createdAt })}</span>
           </div>
           <div className="flex gap-x-2 text-sm text-gray-500">
             <span>ສາຂາ: {folder?.office?.name}</span>

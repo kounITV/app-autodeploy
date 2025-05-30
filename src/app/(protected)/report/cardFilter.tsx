@@ -25,7 +25,7 @@ export function FilterNumberAggregation({ filter: { createdAt, setCreatedAtFilte
     <div >
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 p-4 border rounded-lg bg-muted/30 my-2">
         <div className="space-y-2 h-10">
-          <Label htmlFor="date-filter">ສັນທິເດືອນປິ</Label>
+          <Label htmlFor="date-filter">ວັນທີເດືອນປີ</Label>
           <Popover>
             <PopoverTrigger asChild>
               <Button id="date-filter" variant="outline" className="w-full justify-start text-left font-normal h-9">

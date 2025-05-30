@@ -12,7 +12,7 @@ import { useOfficeAggregation } from "./hook/useAggregation";
 import useOfficeTable from "./hook/useTable";
 
 export default function OfficeList() {
-  const { result, meta, updatePagination, updateSearch, filter } = useOfficeTable();
+  const { result, meta, updatePagination, updateSearch, filter, loading } = useOfficeTable();
   const { result: aggregation } = useOfficeAggregation();
   return (
     <div className="pl-4 space-y-2">
@@ -26,7 +26,7 @@ export default function OfficeList() {
       </div>
       <div className="space-y-4">
         <DataTableToolbar updateSearch={updateSearch} filter={filter} />
-        <DataTable columns={columnsOffice} data={result} meta={meta} updatePagination={updatePagination} />
+        <DataTable columns={columnsOffice} data={result} meta={meta} updatePagination={updatePagination} loading={loading} />
       </div>
     </div>
   );

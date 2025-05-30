@@ -74,7 +74,7 @@ export const columnsExchangeRate: ColumnDef<IExchangeRate>[] = [
   },
   {
     accessorKey: "conversion",
-    header: () => <span className="text-xs font-medium uppercase text-muted-foreground">ອັດຕາແປງ</span>,
+    header: () => <span className="text-xs font-medium uppercase text-muted-foreground">ອັດຕາແລກປ່ຽນ</span>,
     cell: ({ row }) => {
       const rateBase = Number.parseFloat(row.getValue("rateBase"))
       const ratePolice = Number.parseFloat(row.getValue("ratePolice"))

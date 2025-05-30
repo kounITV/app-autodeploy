@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui";
 import { cn } from "@/lib/utils";
-import { CalendarDate, isToday as _isToday, createCalendar, getLocalTimeZone, getWeeksInMonth } from "@internationalized/date";
+import { CalendarDate, isToday as _isToday, createCalendar, getLocalTimeZone, getWeeksInMonth, DateFormatter } from "@internationalized/date";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import React, { useMemo } from "react";
 import { CalendarProps, DateValue, useButton, useCalendar, useCalendarCell, useCalendarGrid, useLocale } from "react-aria";
@@ -91,7 +91,6 @@ function CalendarCell({ state, date }: CalendarCellProps) {
     const timezone = getLocalTimeZone();
     return _isToday(date, timezone);
   }, [date]);
-
   return (
     <td
       {...cellProps}

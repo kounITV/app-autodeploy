@@ -15,6 +15,7 @@ import {
 import * as React from "react";
 
 import {
+  Spinner,
   Table,
   TableBody,
   TableCell,
@@ -37,6 +38,7 @@ interface DataTableProps<TData, TValue> {
   };
   className?: string
   updatePagination?: (pagination: { page: number; limit: number }) => void;
+  loading?: boolean;
 }
 
 export function DataTable<TData, TValue>({
@@ -46,7 +48,8 @@ export function DataTable<TData, TValue>({
   updatePagination,
   handleSearchChange,
   search,
-  className
+  className,
+  loading
 }: DataTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = React.useState({});
   const [columnVisibility, setColumnVisibility] =
@@ -141,7 +144,9 @@ export function DataTable<TData, TValue>({
                     colSpan={columns.length}
                     className="h-24 text-center"
                   >
-                  ບໍ່ມີຂໍ້ມູນ.
+                    {loading ? (
+                      <Spinner size="medium" className="text-secondary"/>
+                    ): "ບໍ່ມີຂໍ້ມູນ."}
                   </TableCell>
                 </TableRow>
               )}

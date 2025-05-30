@@ -68,7 +68,7 @@ export const Combobox = forwardRef<
   const [internalValue, setInternalValue] = useState<string | number | undefined>(defaultValue);
   const getSelectedValue = () => {
     if (value !== undefined) {
-      if (typeof value === 'object' && 'value' in value) {
+      if (value !== null && typeof value === 'object' && 'value' in value) {
         return value.value;
       }
       return value;

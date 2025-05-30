@@ -14,6 +14,8 @@ import { FileUpload } from "./file-upload";
 import { MultiSelect } from "./multi-select";
 import { RadioGroupField } from "./radio-group";
 import { ImageUploadManyName } from "./image-upload-many-name";
+import { ImageInputBox } from "./image-input-box";
+import { ImageInputDrag } from "./image-input-drag";
 
 interface FormProps<TVariables extends FieldValues = FieldValues> {
     formInstance: UseFormReturn<TVariables>;
@@ -24,7 +26,6 @@ interface FormProps<TVariables extends FieldValues = FieldValues> {
     title?: string;
     className?: string
     showButton?: boolean
-
 }
 export const Form = <TVariables extends FieldValues>({
   formInstance,
@@ -85,6 +86,8 @@ Form.Input = {
   Textarea,
   ImageUploadMany: ImageUploadMany,
   ImageWithName: ImageUploadManyName,
+  ImageWithBox: ImageInputBox,
+  ImageWithDrag: ImageInputDrag,
   Radio: RadioGroupField,
   MultiSelect: MultiSelect
 }

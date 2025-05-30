@@ -31,6 +31,7 @@ const useeNumberCombobox = ({ folderId, isAvailable = true }: { folderId?: numbe
   const result = useComboboxMapping(folderData);
   return {
     result,
+    count: query.data?.meta.totalCount,
     loading: query.isLoading,
     error: query.error instanceof Error ? query.error.message : null,
   };

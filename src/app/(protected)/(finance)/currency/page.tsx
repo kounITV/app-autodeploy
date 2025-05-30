@@ -9,7 +9,7 @@ import { DataTableToolbar } from "./container/table/filter";
 import useCurrencyTable from "./hook/useTable";
 
 export default function CurrencyList() {
-  const { result, meta, updatePagination, updateSearch, filter } = useCurrencyTable();
+  const { result, meta, updatePagination, updateSearch, filter, loading } = useCurrencyTable();
   return (
     <div className="pl-4 space-y-2">
       <div className="flex justify-between items-center">
@@ -18,7 +18,7 @@ export default function CurrencyList() {
       </div>
       <div className="space-y-4">
         <DataTableToolbar updateSearch={updateSearch} filter={filter} />
-        <DataTable columns={columnsCurrency} data={result} meta={meta} updatePagination={updatePagination} />
+        <DataTable columns={columnsCurrency} data={result} meta={meta} updatePagination={updatePagination} loading={loading} />
       </div>
     </div>
   );

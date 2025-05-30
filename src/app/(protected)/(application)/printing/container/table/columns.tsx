@@ -5,12 +5,25 @@ import { type ColumnDef } from "@tanstack/react-table";
 import { PrintDialog } from "./PrintDialog";
 import { ImageViewer } from "@/components/containers/image-viewer";
 import { IApplication, IApplicationColumns } from "../../../application/type";
+import { getIdentityLabel } from "src/app/(protected)/profile/lib";
+import { DataTableRowActions } from "@/components/containers/table/data-table-row-actions";
 
 const FullNameCell = ({ row }: IApplicationColumns) => (
   <div className="font-medium">
     {`${row.original?.profile?.firstName} ${row.original?.profile?.lastName}`}
   </div>
 );
+
+const DocumentIdentityCell = ({ row }: IApplicationColumns) => {
+  const identityType = getIdentityLabel(row?.original?.profile.identityType ?? "");
+  const number = row.original?.profile.identityNumber;
+  return (
+    <div className="">
+      <p className="font-semibold text-sm text-muted-foreground">{identityType}</p>
+      <p className="font-semibold">{number}</p>
+    </div>
+  );
+};
 
 const GenderCell = ({ row }: IApplicationColumns) => {
   const gender = row.original?.profile.gender ?? "";
@@ -50,6 +63,34 @@ const PositionCell = ({ row }: IApplicationColumns) => {
     </div>
   );
 };
+const CompanyCell = ({ row }: IApplicationColumns) => {
+  const companyName = row.original?.company?.name;
+  const villageName = `${row.original?.village?.villageLao}(ບ້ານ)`;
+  const company = companyName ?? villageName ?? "ຍັງບໍ່ໄດ້ລະບຸ";
+
+  if (!company) { 
+    return null; 
+  }
+
+  return (
+    <div className="flex flex-col">
+      <span className="font-medium overflow-hidden">{company}</span>
+    </div>
+  );
+};
+const IdentityNumber = ({ row }: IApplicationColumns) => {
+  const identityType = getIdentityLabel(row.original?.profile?.identityType || "");
+  const profile = row.original?.profile?.identityNumber
+  if (!profile) { 
+    return null; }
+
+  return (
+    <div className="flex flex-col">
+      <span className="font-medium">{identityType}</span>
+      <span className="text-xs text-muted-foreground">{profile}</span>
+    </div>
+  );
+};
 
 const PhoneNumberCell = ({ row }: IApplicationColumns) => {
   const phoneNumber = row.original?.profile?.phoneNumber;
@@ -84,6 +125,11 @@ export const columnsProfile = ({ refetch }: { refetch: () => void }): Array<Colu
     cell: ({ row }) => <FullNameCell row={row} />,
   },
   {
+    accessorKey: "identityNumber",
+    header: "ເອກະສານຢັ້ງຢືນ",
+    cell: ({ row }) => <DocumentIdentityCell row={row} />,
+  },
+  {
     accessorKey: "gender",
     header: "ເພດ",
     cell: ({ row }) => <GenderCell row={row} />,
@@ -92,6 +138,16 @@ export const columnsProfile = ({ refetch }: { refetch: () => void }): Array<Colu
     accessorKey: "nationality",
     header: "ສັນຊາດ ແລະ ເຊື້ອຊາດ",
     cell: ({ row }) => <NationalityCell row={row} />,
+  },
+  {
+    accessorKey: "identityNumber",
+    header: "ເລກທີເອກະສານ",
+    cell: ({ row }) => <IdentityNumber row={row} />,
+  },
+  {
+    accessorKey: "companyId",
+    header: "ຫົວໜ່ວຍທຸລະກິດ ຫຼື ບ້ານ",
+    cell: ({ row }) => <CompanyCell row={row} />,
   },
   {
     accessorKey: "position",
@@ -109,6 +165,14 @@ export const columnsProfile = ({ refetch }: { refetch: () => void }): Array<Colu
     cell: ({ row: { original } }) => {
       const frozenOriginal = Object.freeze(original);
       return <PrintDialog title="ພິມບັດ" application={frozenOriginal} refetch={refetch} />;
+    },
+  },
+  {
+    accessorKey: "id",
+    header: "",
+    cell: ({ row: { original: row } }) => {
+      const rowId = row.id;
+      return <DataTableRowActions rowId={rowId} resource="application" />;
     },
   },
 ];

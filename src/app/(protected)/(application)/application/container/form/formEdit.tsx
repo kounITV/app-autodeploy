@@ -33,7 +33,7 @@ interface ApplicationFormProps {
 const ApplicationFormEdit: React.FC<ApplicationFormProps> = ({ form, onSubmit, profileId }) => {
   const folder = form.watch("folderId");
   const dependBy = form.watch("dependBy");
-  const { result: folderOptions } = useFolderCombobox({ status: "POLICE_UNDER_REVIEW" });
+  const { result: folderOptions } = useFolderCombobox({ status: "APPROVED_BY_POLICE" });
   const { result: numberOptions } = useeNumberCombobox({ folderId: folder, isAvailable: false });
   const { result: companyOptions } = useCompanyCombobox();
   const { result: positionOptions } = usePositionCombobox();

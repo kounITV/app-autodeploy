@@ -9,7 +9,7 @@ import { DataTableToolbar } from "./container/table/filter";
 import usePriceTable from "./hook/useTable";
 
 export default function PriceList() {
-  const { result, meta, updatePagination, updateSearch, filter } = usePriceTable();
+  const { result, meta, updatePagination, updateSearch, filter, loading } = usePriceTable();
   return (
     <div className="pl-4 space-y-2">
       <div className="flex justify-between items-center">
@@ -18,7 +18,7 @@ export default function PriceList() {
       </div>
       <div className="space-y-4">
         <DataTableToolbar updateSearch={updateSearch} filter={filter} />
-        <DataTable columns={columnsPrice} data={result} meta={meta} updatePagination={updatePagination} />
+        <DataTable columns={columnsPrice} data={result} meta={meta} updatePagination={updatePagination} loading={loading} />
       </div>
     </div>
   );

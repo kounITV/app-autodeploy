@@ -7,10 +7,11 @@ import { Input } from "../ui"
 export interface PasswordInputProps
   extends React.InputHTMLAttributes<HTMLInputElement> {
   strengthIndicator?: boolean
+  isCreating?: boolean,
 }
 
 const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
-  ({ className, strengthIndicator = true, value: propValue, ...props }, ref) => {
+  ({ className, strengthIndicator = true, value: propValue, isCreating, ...props }, ref) => {
     const [password, setPassword] = useState(propValue as string || "")
     const [isVisible, setIsVisible] = useState<boolean>(false)
 
@@ -90,8 +91,7 @@ const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
               )}
           </button>
         </div>
-
-        {strengthIndicator && (
+        {(strengthIndicator && isCreating) && (
           <>
             <div
               className="mb-4 mt-3 h-1 w-full overflow-hidden rounded-full bg-border"

@@ -39,7 +39,7 @@ const useProfileList = () => {
   const [result, setResult] = useState<any | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-
+  
   const fetchProfile = useCallback(async () => {
     setLoading(true);
     setError(null);

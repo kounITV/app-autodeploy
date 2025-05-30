@@ -4,7 +4,7 @@ import { Check } from 'lucide-react';
 
 export function StepIndicator({ steps, currentStep, onStepClick }: StepIndicatorProps) {
   return (
-    <div className="relative flex justify-between w-full px-2">
+    <div className="relative flex justify-between w-[130px] px-2">
       <div className="absolute top-4 left-0 right-0 h-[1px] bg-gray-200" />
       <div
         className="absolute top-4 left-0 h-[1px] bg-primary transition-all duration-500 ease-in-out"
@@ -25,12 +25,6 @@ export function StepIndicator({ steps, currentStep, onStepClick }: StepIndicator
           >
             {currentStep > step.number ? <Check className="h-4 w-4" /> : step.number}
           </div>
-          <span className={cn(
-            "text-sm font-medium whitespace-nowrap",
-
-          )}>
-            {step.title}
-          </span>
         </div>
       ))}
     </div>

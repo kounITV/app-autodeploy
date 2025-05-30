@@ -1,4 +1,4 @@
-import { monthNamesLao } from "@/lib/ constant/month";
+import { monthNamesLao } from "@/lib/constant/month";
 import { AggregationResultItem } from "./type";
 
 export function monthOrder(data: AggregationResultItem[]) {

@@ -26,8 +26,8 @@ export const hookLoginForm = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      username: "admin",
-      password: "Lit@2024",
+      username: "",
+      password: "",
     },
   });
 

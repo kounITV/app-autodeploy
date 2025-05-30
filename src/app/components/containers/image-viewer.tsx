@@ -211,6 +211,7 @@ export function ImageViewer({
                   alt={alt}
                   unoptimized
                   fill
+                  crossOrigin="anonymous"
                   className="object-cover transition-all duration-300"
                   sizes="(max-width: 768px) 100vw, 300px"
                   onError={() => setHasError(true)}

@@ -8,7 +8,7 @@ import { columnsExchangeRate } from "./container/table/columns";
 import useExchangeRateTable from "./hook/useTable";
 
 export default function ExchangeRateList() {
-  const { result, meta, updatePagination } = useExchangeRateTable();
+  const { result, meta, updatePagination, loading } = useExchangeRateTable();
   return (
     <div className="pl-4 space-y-2">
       <div className="flex justify-between items-center">
@@ -16,7 +16,7 @@ export default function ExchangeRateList() {
         <CreateButton resouce="exchange" title='ສ້າງອັດ​ຕາ​ແລກ​ປ່ຽນ' />
       </div>
       <div className="space-y-4">
-        <DataTable columns={columnsExchangeRate} data={result} meta={meta} updatePagination={updatePagination} />
+        <DataTable columns={columnsExchangeRate} data={result} meta={meta} updatePagination={updatePagination} loading={loading} />
       </div>
     </div>
   );

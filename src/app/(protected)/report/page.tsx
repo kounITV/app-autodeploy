@@ -13,7 +13,7 @@ export default function FinancialSummary() {
   const { result, filter } = useNumberAggregation()
 
   const formatCurrency = (amount: number, symbol: string) => {
-    return `${symbol}${amount.toLocaleString()}`
+    return `${symbol}${amount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
   }
   const exportToExcel = () => {
     const workbook = XLSX.utils.book_new()
@@ -103,7 +103,7 @@ export default function FinancialSummary() {
               <TableHeader>
                 <TableRow>
                   <TableHead>ລ/ດ</TableHead>
-                  <TableHead>ລະຫັດບັດ</TableHead>
+                  <TableHead>ເລກທີຟອມ</TableHead>
                   <TableHead>ວັນທີເດືອນປີ</TableHead>
                   <TableHead>ປະເພດບັດ</TableHead>
                   <TableHead>ຜູ້ຮັບເງິນ</TableHead>

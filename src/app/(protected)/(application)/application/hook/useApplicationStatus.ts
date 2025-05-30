@@ -15,6 +15,8 @@ export const useApplicationStatus = () => {
         type: "success",
         title: "ສໍາເລັດ",
       });
+      queryClient.invalidateQueries({ queryKey: ["application-aggregation"] });
+      queryClient.invalidateQueries({ queryKey: ["application"] });
       queryClient.invalidateQueries({ queryKey: ["applications"] });
     } catch {
       showToast({

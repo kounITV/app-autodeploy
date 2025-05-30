@@ -9,6 +9,7 @@
     font-weight: 300;
     font-style: normal;
     font-display: swap;
+    unicode-range: U+0E80-0EFF;
   }
   @font-face {
     font-family: "TimesNewRoman";
@@ -16,6 +17,7 @@
     font-weight: 400;
     font-style: normal;
     font-display: swap;
+    unicode-range: U+0000-007F;
   }
 
   @layer utilities {
@@ -32,6 +34,9 @@
   }
   .font-Phetsarath {
     font-family: "Phetsarath", system-ui, sans-serif;
+  }
+  p {
+    font-family: 'Phetsarath', 'Times New Roman', serif;
   }
   * {
     @apply border-border;

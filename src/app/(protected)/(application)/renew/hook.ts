@@ -35,9 +35,8 @@ const useProfileBarcode = () => {
   const [barcode, setBarcodeFilter] = useState<string>();
   const [isLoading, setIsLoading] = useState(false);
   const [debouncedSearch] = useDebounce(search, 300);
-
   const query = useQuery<IProfileResponse, Error>({
-    queryKey: ["profile-barcode", page, limit, debouncedSearch, barcode],
+    queryKey: ["applications", page, limit, debouncedSearch, barcode],
     queryFn: async () => {
       setIsLoading(true);
       try {

@@ -18,16 +18,16 @@ export function LoginForm() {
         </div>
         <div className="grid gap-2">
           <Form.Field name="username" control={form.control} label="ບັນຊີເຂົ້າໃຊ້ງານລະບົບ">
-            <Form.Input.Input placeholder="59684710" />
+            <Form.Input.Input placeholder="ປ້ອນຊື່ຜູ້ໃຊ້" />
           </Form.Field>
           <Form.Field name="password" control={form.control} label="ລະຫັດຜ່ານ">
-            <Form.Input.Password />
+            <Form.Input.Password placeholder="ປ້ອນລະຫັດຜ່ານ" isCreating={false} />
           </Form.Field>
           {form.formState.errors.root && (
             <p className="text-red-600 text-sm">{form.formState.errors.root.message}</p>
           )}
         </div>
-        <Button className="mt-2 w-full" loading={isLoading}>
+        <Button className="mt-11 w-full" loading={isLoading}>
           ເຂົ້າສູ່ລະບົບ
         </Button>
       </Form >

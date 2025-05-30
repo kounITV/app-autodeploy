@@ -1,10 +1,10 @@
 "use client";
 
 import { Form } from "@/components/containers/form";
-import { Badge, Card, CardHeader } from "@/components/ui";
+import { Badge, Card, CardHeader, ScrollArea, Separator } from "@/components/ui";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import { format } from "date-fns";
-import React, { useEffect } from "react";
 import { type UseFormReturn } from "react-hook-form";
 import useCompanyCombobox from "src/app/(protected)/company/hook/useeCompanyCombobox";
 import usePositionCombobox from "src/app/(protected)/position/hook/useePositionCombobox";
@@ -17,6 +17,8 @@ import { IProfile } from "src/app/(protected)/profile/type";
 import useVillageCombobox from "src/app/(protected)/(address)/village/hook/useDistrictCombobox";
 import { getOfficeId } from "@/lib/getSession";
 import useFolderCombobox from "../../../folder/hook/useCombobox";
+import { useEffect } from "react";
+import { IApplication } from "../../type";
 
 const formTitle = "ອອກບັດໃຫມ່";
 const formSubtitle = "ກະລຸນາປ້ອນຂໍ້ມູນອອກບັດໃຫມ່";
@@ -38,13 +40,13 @@ const ApplicationForm: React.FC<ApplicationFormProps> = ({ form, onSubmit, profi
   const numberId = form.watch("numberId");
   const dependBy = form.watch("dependBy");
   const { result: folderOptions } = useFolderCombobox({ status: "APPROVED_BY_POLICE", officeId });
-  const { result: numberOptions } = useeNumberCombobox({ folderId: folder });
+  const { result: numberOptions, count } = useeNumberCombobox({ folderId: folder });
   const foundNumber = numberOptions.find((item) => item.value === numberId);
   useUpdateDefaultValues({ form, fieldName: "expirationTerm", value: foundNumber?.duration, shouldUpdate: foundNumber?.value });
+  useUpdateDefaultValues({ form, fieldName: "positionId", value: 10, shouldUpdate: true });
   const { result: companyOptions } = useCompanyCombobox();
   const { result: positionOptions } = usePositionCombobox();
   const { result: villageOptions } = useVillageCombobox({});
-
   useEffect(() => {
     const expirationTerm = form.watch("expirationTerm");
     if (expirationTerm) {
@@ -63,14 +65,16 @@ const ApplicationForm: React.FC<ApplicationFormProps> = ({ form, onSubmit, profi
   return (
     <div className="w-fit space-y-6 mx-auto">
       <ProfileCard profileId={profileId} />
-      <Form formInstance={form} onSubmit={onSubmit} title={formTitle} subtitle={formSubtitle}>
-        <div className="space-y-4">
+      <Form formInstance={form} onSubmit={onSubmit} title={formTitle} 
+        subtitle={formSubtitle}
+      >
+        <div className="space-y-4 -mt-8">
           <h3 className="text-lg font-medium">ຂໍ້ມູນແຟ້ມ ແລະ ຟອມ</h3>
           <div className="grid gap-4 sm:grid-cols-2">
             <Form.Field name="folderId" control={form.control} label="ເລືອກແຟ້ມ">
               <Form.Input.Combobox placeholder="ແຟ້ມ" className="w-96" options={folderOptions} />
             </Form.Field>
-            <Form.Field name="numberId" control={form.control} label="ເລືອກຟອມເລກທິ" >
+            <Form.Field name="numberId" control={form.control} label={`ເລືອກຟອມເລກທີ(ຈໍານວນ ${count} ເລກທີ)`} >
               <Form.Input.Combobox placeholder="ຟອມເລກທິ" className="w-96" options={numberOptions} />
             </Form.Field>
           </div>
@@ -138,8 +142,29 @@ const calculateDates = (term: ExpirationTerm) => {
   return { issueDate, expirationDate };
 };
 
+export const isTwoWeeksLeftBeforeExpiry = (expirationDate?: string): boolean => {
+  if (!expirationDate) {
+    return false
+  }
+
+  const now = new Date();
+  const expiry = new Date(expirationDate);
+
+  const diffInMs = expiry.getTime() - now.getTime();
+  // eslint-disable-next-line no-magic-numbers
+  const diffInDays = diffInMs / (1000 * 60 * 60 * 24);
+
+  // eslint-disable-next-line no-magic-numbers
+  return diffInDays <= 14;
+};
+
 const ProfileCard = ({ profileId }: { profileId: number }) => {
+  const path = usePathname();
+  const type = path.split('/').pop();
   const { data: profile } = useOne<IProfile>({ resource: "profile", id: profileId });
+  const { data } = useOne<IApplication>({ resource: "application/history", id: profileId });
+  const history = data?.result;
+  let no = 1;
   const { image, firstName, gender, lastName, identityExpiryDate, identityIssueDate, identityNumber, identityType, applicationNumber } = profile?.result
     ?? {};
   const formatDate = (dateString: string) => {
@@ -147,9 +172,17 @@ const ProfileCard = ({ profileId }: { profileId: number }) => {
       return "";
     }
     const date = new Date(dateString);
-    return format(date, "dd/MM/yy");
+    return format(date, "dd/MM/yyyy");
   };
-
+  const IdentifyOptions = [
+    { value: "passport", label: "Passport" },
+    { value: "nationalId", label: "ບັດປະຈຳຕົວ" },
+    { value: "driverLicense", label: "ໃບຂັບຂີ່" },
+  ];
+  const getIdentityLabel = (value: string | undefined) => {
+    const found = IdentifyOptions.find((option) => option.value === value);
+    return found?.label ?? value ?? "-";
+  };
   return (
     <div className=" mx-auto  space-y-6">
       <Card className="w-full">
@@ -170,16 +203,54 @@ const ProfileCard = ({ profileId }: { profileId: number }) => {
               {gender}
             </Badge>
             <div className="flex flex-col items-center sm:items-start">
-              ເອກະສານຢັ້ງຢືນ: {identityType} {identityNumber}
+              ເອກະສານຢັ້ງຢືນ: {getIdentityLabel(identityType)} {identityNumber}
             </div>
             <div className="flex flex-col items-center sm:items-start">
               ອາຍຸ: {formatDate(identityIssueDate ?? "")} - {formatDate(identityExpiryDate ?? "")}
             </div>
             <div className="flex flex-col items-center sm:items-start">
-              ເລກທີຟອມ: {applicationNumber ?? "-"}
+              ເລກທີໃບຄໍາຮ້ອງ: {applicationNumber ?? "-"}
             </div>
           </div>
         </CardHeader>
+        {((Array.isArray(history) && history.length > 0) && type === 'RENEW') &&
+        <div>
+          <Separator className="my-2" />
+          <ScrollArea className="h-52 w-full rounded-md">
+            <div className="p-4">
+              {Array.isArray(history) && (
+                <div className="px-2 py-1">
+                  <h4 className="mb-4 font-bold leading-none">ປະວັດສະຖານທີ່ເຮັດວຽກ:</h4>
+                  <table className="min-w-full text-sm text-left border-none">
+                    <thead className="bg-gray-100">
+                      <tr>
+                        <th className="px-4 py-2 border-none">ລໍາດັບ</th>
+                        <th className="px-4 py-2 border-none">{history.companyId !== null ? "ຊື່ບໍລິສັດ" : "ບ້ານ"}</th>
+                        <th className="px-4 py-2 border-none">ວັນທີອອກບັດ</th>
+                        <th className="px-4 py-2 border-none">ວັນທີໝົດອາຍຸ</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {history.map((row: any, index: number) => (
+                        <tr key={index} className="hover:bg-gray-50">
+                          <td className="px-4 py-2 border-none">{no++}</td>
+                          {row.company ? (
+                            <td className="px-4 py-2 border-none">{row.company?.name ?? '-'}</td>
+                          ):(
+                            <td className="px-4 py-2 border-none">{row.village?.name ?? '-'}</td>
+                          )}
+                          <td className="px-4 py-2 border-none">{formatDate(row.issueDate) ?? '-'}</td>
+                          <td className="px-4 py-2 border-none">{formatDate(row.expirationDate) ?? '-'}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </div>
+          </ScrollArea>
+        </div>
+        }
       </Card>
     </div>
   );

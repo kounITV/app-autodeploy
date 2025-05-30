@@ -11,6 +11,8 @@ export const checkBlacklistFormSchema = z.object({
     .refine((value) => value !== null && value !== "", {
       message: "ກະລຸນາໃສ່ວັນເດືອນປີເກີດ",
     }),
+  identityNumber: z.string().min(1, { message: "ກະລຸນາໃສ່ເລກທີເອກະສານ" }),
+  identityType: z.string().min(1, { message: "ກະລຸນາເລືອກປະເພດເອກະສານ" }),
 });
 
 export const blacklistFormCreateSchema = z.object({
@@ -25,6 +27,7 @@ export const defaultValues = {
   firstName: "",
   lastName: "",
   dateOfBirth: "",
+  identityNumber: "",
 };
 
 export const blacklistDefaultValues = {

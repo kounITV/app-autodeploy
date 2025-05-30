@@ -12,7 +12,7 @@ import { usePositionAggregation } from "./hook/useAggregation";
 import useProfileTable from "./hook/useTable";
 
 export default function PositionList() {
-  const { result, meta, updatePagination, updateSearch, filter } = useProfileTable({});
+  const { result, meta, updatePagination, updateSearch, filter, loading } = useProfileTable({});
   const { result: aggregation } = usePositionAggregation();
   return (
     <div className="pl-4 space-y-2">
@@ -26,7 +26,7 @@ export default function PositionList() {
       </div>
       <div className="space-y-4">
         <DataTableToolbar updateSearch={updateSearch} filter={filter} />
-        <DataTable columns={columnsPosition} data={result} meta={meta} updatePagination={updatePagination} />
+        <DataTable columns={columnsPosition} data={result} meta={meta} updatePagination={updatePagination} loading={loading}/>
       </div>
     </div>
   );

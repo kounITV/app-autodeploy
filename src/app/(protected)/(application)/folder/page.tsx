@@ -23,6 +23,9 @@ export default function FolderView() {
     case "ADMIN":
       folderListComponent = <FolderListAdmin />;
       break;
+    case "SUPER_ADMIN":
+      folderListComponent = <FolderListAdmin />;
+      break;
     case "FINANCE":
       folderListComponent = <FolderListFinance />;
       break;
@@ -128,13 +131,13 @@ function FolderListPoliceOfficer() {
         </TabsContent>
         <TabsContent value="tab-3">
           <div className='grid gap-4 sm:grid-cols-2 lg:grid-cols-4 mb-3'>
-            <AggregationCard value={aggregationApproved?.total || 0} title="ແຟ້ມລໍຖ້າຍອມຮັບຈາກ​ຕໍາ​ຫຼວດ​" icon={<FolderOpenDot />} label="ແຟ້ມ" />
+            <AggregationCard value={aggregationApproved?.total || 0 } title="ແຟ້ມລໍຖ້າຍອມຮັບຈາກ​ຕໍາ​ຫຼວດ​" icon={<FolderOpenDot />} label="ແຟ້ມ" />
           </div>
           <div className='space-y-4'>
             <FolderToolbar updateSearch={updateSearchApproved} filter={filterApproved} showStatus={false} />
             <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6 '>
               {resultApproved?.map((folder) => (
-                <FolderCardView folder={folder} status= "POLICE_UNDER_REVIEW" key={folder?.id} action={{ statusText: "ສົ່ງເອກກະສານ", showDetail: "ລາຍລະອຽດ" }} />
+                <FolderCardView folder={folder} status= "FINISHED" key={folder?.id} action={{ statusText: "ສໍາເລັດ", showDetail: "ລາຍລະອຽດ" }} />
               ))}
             </div>
           </div>
@@ -182,8 +185,8 @@ function FolderListAdmin() {
             <Badge variant="secondary" > {aggregationDefault.total} </Badge>
           </TabsTrigger>
           <TabsTrigger value="tab-2" className="group gap-x-2">
-            <Loader className="-ms-0.5 me-1.5 opacity-60" size={16} strokeWidth={2} aria-hidden="true" />{"ແຟ້ມລໍຖ້າຍອມຮັບ"}
-            <Badge variant="secondary" > {aggregationPending.total} </Badge>
+            <Loader className="-ms-0.5 me-1.5 opacity-60" size={16} strokeWidth={2} aria-hidden="true" />{"ແຟ້ມລໍຖ້າຮັບເງີນ"}
+            <Badge variant="secondary" > {aggregationFinanceUnderReview.total} </Badge>
           </TabsTrigger>
           <TabsTrigger value="tab-3" className="group gap-x-2">
             <Loader className="-ms-0.5 me-1.5 opacity-60" size={16} strokeWidth={2} aria-hidden="true" />{"ແຟ້ມລໍຖ້າຍອມຮັບ"}

@@ -11,7 +11,7 @@ import { useDistrictAggregation } from "./hook/useAggregation";
 import useDistrictTable from "./hook/useTable";
 
 export default function DistrictList() {
-  const { result, meta, updatePagination, updateSearch, filter } = useDistrictTable();
+  const { result, meta, updatePagination, updateSearch, filter, loading } = useDistrictTable();
   const { result: aggregation } = useDistrictAggregation();
   return (
     <div className="pl-4 space-y-2">
@@ -24,7 +24,7 @@ export default function DistrictList() {
       </div>
       <div className="space-y-4">
         <DataTableToolbar updateSearch={updateSearch} filter={filter} />
-        <DataTable columns={columnsDistrict} data={result} meta={meta} updatePagination={updatePagination} />
+        <DataTable columns={columnsDistrict} data={result} meta={meta} updatePagination={updatePagination} loading={loading} />
       </div>
     </div>
   );

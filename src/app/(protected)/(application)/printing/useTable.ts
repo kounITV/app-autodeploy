@@ -13,12 +13,14 @@ interface IApplicationResponse {
   meta: MetaState;
 }
 
-const fetchApplication = async ({ page, limit, search, folderStatus, genderFilter, status, includeFinished, officeIds }: {
+const fetchApplication = async ({ page, limit, search, folderStatus, genderFilter, yearFilter, dateFilter, status, includeFinished, officeIds }: {
   page: number;
   limit: number;
   search: string;
   folderStatus: string;
   genderFilter?: string;
+  yearFilter?: string;
+  dateFilter?: Date;
   status?: string;
   includeFinished?: boolean;
   officeIds?: string
@@ -33,6 +35,12 @@ const fetchApplication = async ({ page, limit, search, folderStatus, genderFilte
   if (status) {
     params.status = status;
   }
+  if (yearFilter) {
+    params.year = yearFilter;
+  }
+  if (dateFilter) {
+    params.date = dateFilter;
+  }
   const response = await apiClient.get<IApplicationResponse>("/application", {
     params,
   });
@@ -43,11 +51,19 @@ const useApplicationTable = ({ folderStatus = "", status = "APPROVED", includeFi
   const { page, limit, updatePagination, resetPage } = usePaginationStore();
   const { search, updateSearch } = useSearchStore();
   const [genderFilter, setGenderFilter] = useState<string>("");
+  const [yearFilter, setYearFilter] = useState<string>("")
+  const [dateFilter, setDateFilter] = useState<Date | undefined>()
   const [debouncedSearch] = useDebounce(search, 500);
   const query = useQuery<IApplicationResponse, Error>({
-    queryKey: ["applications", page, limit, debouncedSearch, folderStatus, genderFilter, status, includeFinished, officeIds],
-    queryFn: async () => await fetchApplication({ page, limit, search: debouncedSearch, folderStatus, genderFilter, status, includeFinished, officeIds }),
+    queryKey: ["applications", page, limit, debouncedSearch, folderStatus, genderFilter, yearFilter, dateFilter, status, includeFinished, officeIds],
+    queryFn: async () => await fetchApplication({ page, limit, search: debouncedSearch, folderStatus, genderFilter, yearFilter, dateFilter, status, includeFinished, officeIds }),
     placeholderData: (previousData) => previousData,
+    retry: (failureCount, error) => {
+      if (error instanceof Error && "message" in error) {
+        return failureCount < 3 && error.message.includes("429");
+      }
+      return false;
+    },
   });
   return {
     result: query.data?.result || [],
@@ -60,6 +76,10 @@ const useApplicationTable = ({ folderStatus = "", status = "APPROVED", includeFi
     filter: {
       genderFilter,
       setGenderFilter,
+      yearFilter,
+      setYearFilter,
+      dateFilter,
+      setDateFilter,
     },
     loading: query.isLoading,
     error: query.error instanceof Error ? query.error.message : null,

@@ -41,7 +41,7 @@ export default function UserPage() {
 
 function TableUser() {
   const officeListIds = getOfficeIds()
-  const { result, meta, updatePagination, updateSearch, filter } = useProfileTable({ officeIds: officeListIds });
+  const { result, meta, updatePagination, updateSearch, filter, loading } = useProfileTable({ officeIds: officeListIds });
   const handleTabChange = newFunction(updatePagination);
   return (
     <div>
@@ -57,11 +57,11 @@ function TableUser() {
         <Tab.Panels>
           <Tab.Panel className="space-y-4">
             <DataTableToolbar updateSearch={updateSearch} filter={filter} />
-            <DataTable columns={columnsProfile} data={result} meta={meta} updatePagination={updatePagination} />
+            <DataTable columns={columnsProfile} data={result} meta={meta} updatePagination={updatePagination} loading={loading} />
           </Tab.Panel>
           <Tab.Panel className="space-y-4">
             <DataTableToolbar updateSearch={updateSearch} filter={filter} />
-            <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-4'>
+            <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-3 gap-4'>
               {result?.map((item) => (
                 <ProfileGrid key={item?.no} data={[item]} />
               ))}

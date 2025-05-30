@@ -59,6 +59,7 @@ const createFormValues = (
   return {
     name: company.name,
     businessCode: company.businessCode,
+    businessType: company.businessType,
     businessRegisterBy: company.businessRegisterBy,
     companyFile: Array.isArray(company.companyFile)
       ? company.companyFile

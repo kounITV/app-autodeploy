@@ -36,7 +36,7 @@ export default function ProfileGrid({ data, renewable }: { renewable?: boolean, 
   };
 
   return (
-    <div className="">
+    <div >
       {data?.map((profile) => (
         <ProfileCard
           key={profile.identityNumber}

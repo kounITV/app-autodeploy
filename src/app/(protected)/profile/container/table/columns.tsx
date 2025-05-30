@@ -75,7 +75,7 @@ export const columnsProfile: Array<ColumnDef<IProfile>> = [
   },
   {
     accessorKey: "applicationNumber",
-    header: "ເອກທິຟອມ",
+    header: "ເລກທີໃບຄໍາຮ້ອງ",
   },
   {
     accessorKey: "barcode",
@@ -109,7 +109,7 @@ export const columnsProfile: Array<ColumnDef<IProfile>> = [
   },
   {
     accessorKey: "id",
-    header: "ຂື້ນບັນຊີດໍາ",
+    header: "ຜູກຮູບໂປຣຟາຍ",
     cell: ({ row }) => <ProfileLinkCell item={row.original} />,
   },
   {

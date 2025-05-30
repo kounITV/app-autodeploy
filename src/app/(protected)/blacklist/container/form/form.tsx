@@ -5,13 +5,21 @@ import { type z } from "zod";
 import { Button } from "@/components/containers";
 import { Form } from "@/components/containers/form";
 import { type checkBlacklistFormSchema } from "./schema";
+import { useUpdateDefaultValues } from "@/lib/update-default-values";
 interface BlacklistProfileFormProps {
   form: UseFormReturn<z.infer<typeof checkBlacklistFormSchema>>;
   onSubmit: (data: z.infer<typeof checkBlacklistFormSchema>) => Promise<void>;
 }
 
+const IdentifyOptions = [
+  { value: "passport", label: "Passport" },
+  { value: "nationalId", label: "ບັດປະຈຳຕົວ" },
+  { value: "driverLicense", label: "ໃບຂັບຂີ່" },
+];
+
 const BlacklistProfileForm: React.FC<BlacklistProfileFormProps> = ({ form, onSubmit }) => {
   const { errors } = form.formState;
+  useUpdateDefaultValues({ form, fieldName: "identityType", value: "nationalId", shouldUpdate: true });
   return (
     <Form formInstance={form} onSubmit={onSubmit} className="border-none shadow-none p-0" showButton={false}>
       {Object.keys(errors).length > 0 && (
@@ -27,13 +35,19 @@ const BlacklistProfileForm: React.FC<BlacklistProfileFormProps> = ({ form, onSub
       <div className="space-y-4">
         <div className="grid gap-4 sm:grid-cols-2">
           <Form.Field name="firstName" control={form.control} label="ຊື່ແທ້">
-            <Form.Input.Input placeholder="ປ້ອນຊື່" />
+            <Form.Input.Input placeholder="ປ້ອນຊື່"/>
           </Form.Field>
           <Form.Field name="lastName" control={form.control} label="ນາມສະກຸນ">
-            <Form.Input.Input placeholder="ປ້ອນນາມສະກຸນ" />
+            <Form.Input.Input placeholder="ປ້ອນນາມສະກຸນ"/>
           </Form.Field>
           <Form.Field name="dateOfBirth" control={form.control} label="ວັນເດືອນປີເກີດ">
-            <Form.Input.DateTimePicker />
+            <Form.Input.DateTimePicker/>
+          </Form.Field>
+          <Form.Field name="identityType" control={form.control} label="ປະເພດເອກະສານ">
+            <Form.Input.Select options={IdentifyOptions} defaultValue="nationalId"/>
+          </Form.Field>
+          <Form.Field name="identityNumber" control={form.control} label="ເລກທີເອກະສານ">
+            <Form.Input.Input placeholder="ເລທີເອກະສານ"/>
           </Form.Field>
         </div>
       </div>

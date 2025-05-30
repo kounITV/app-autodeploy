@@ -100,6 +100,7 @@ export const columnsUser: Array<ColumnDef<IUser>> = [
 export const roleLabels: RoleLabels = {
   STAFF: "ພະນັກງານ",
   ADMIN: "ແອັດມິນ",
+  SUPER_ADMIN: "ຊູເປີແອັດມິນ",
   FINANCE: "ການເງິນ",
   POLICE_OFFICER: "ທີມງານຕື່ມຟອມ",
   POLICE_COMMANDER: "ທີມງານອະນຸມັດຟອມ",
@@ -111,6 +112,7 @@ export const getRoleLabel = (role: keyof RoleLabels | string) => {
   const result = roleLabels[role as keyof RoleLabels]
   const roleColors: Record<string, string> = {
     ADMIN: "bg-blue-50 text-blue-700 border-blue-200",
+    SUPER_ADMIN: "bg-blue-50 text-blue-700 border-blue-200",
     STAFF: "bg-green-50 text-green-700 border-green-200",
     FINANCE: "bg-amber-50 text-amber-700 border-amber-200",
     POLICE_OFFICER: "bg-purple-50 text-purple-700 border-purple-200",

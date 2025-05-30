@@ -7,7 +7,7 @@ import { DataTableToolbar } from "../../blacklist/filter";
 import useProfileTable from "../../profile/hook/useTable";
 
 export default function UserPage() {
-  const { result, meta, updatePagination, updateSearch, filter } = useProfileTable({ excludeApplications: true });
+  const { result, meta, updatePagination, updateSearch, filter, loading } = useProfileTable({ excludeApplications: true });
   return (
     <div className="pl-4 space-y-2">
       <div className="flex justify-between items-center">
@@ -15,7 +15,7 @@ export default function UserPage() {
       </div>
       <div className="space-y-4">
         <DataTableToolbar updateSearch={updateSearch} filter={filter} />
-        <DataTable columns={columnsProfile} data={result} meta={meta} updatePagination={updatePagination} />
+        <DataTable columns={columnsProfile} data={result} meta={meta} updatePagination={updatePagination} loading={loading} />
       </div>
     </div>
   );

@@ -23,6 +23,7 @@ type SelectProps = SelectCoreProps & {
     options?: any[];
     className?: string
     disabled?: boolean
+    onKeyDown?: React.KeyboardEventHandler<HTMLElement>;
 };
 
 export const Select = forwardRef<
@@ -37,7 +38,7 @@ export const Select = forwardRef<
       value={props.value ? props.value : props.defaultValue}
     >
       <FormControl className="h-10">
-        <SelectTrigger className={cn("", props?.className)}>
+        <SelectTrigger className={cn("", props?.className)} onKeyDown={props.onKeyDown }>
           <SelectValue placeholder={props?.defaultValue ?? "ເລືອກ"} />
         </SelectTrigger>
       </FormControl>

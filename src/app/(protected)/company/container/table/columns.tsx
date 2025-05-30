@@ -25,6 +25,14 @@ export const columnsCompany: Array<ColumnDef<ICompany>> = [
     },
   },
   {
+    accessorKey: "businessType",
+    header: "ປະເພດຫົວໜ່ວຍທຸລະກິດ",
+    cell: ({ row }) => {
+      const code = row.original?.businessType ?? null;
+      return <Badge variant="secondary" >{code ?? "-"}</Badge>;
+    },
+  },
+  {
     accessorKey: "businessRegisterBy",
     header: "ຈົດທະບຽນ",
     cell: ({ row }) => {
@@ -39,7 +47,7 @@ export const columnsCompany: Array<ColumnDef<ICompany>> = [
   },
   {
     accessorKey: "updatedAt",
-    header: "ວັນທິແກ້ໄຂ",
+    header: "ວັນທີແກ້ໄຂ",
   },
   {
     accessorKey: "id",

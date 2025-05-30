@@ -59,7 +59,7 @@ export const columnsCurrency: ColumnDef<ICurrency>[] = [
   },
   {
     accessorKey: "updatedAt",
-    header: () => <span className="font-medium">ວັນທິແກ້ໄຂ</span>,
+    header: () => <span className="font-medium">ວັນທີແກ້ໄຂ</span>,
     cell: ({ row }) => {
       const date = row.getValue<string | Date>("updatedAt")
       const formatted = formatDate({ date })

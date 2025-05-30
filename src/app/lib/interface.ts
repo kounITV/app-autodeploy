@@ -29,3 +29,11 @@ export interface IFormProps {
     control: any;
   };
 }
+export interface IFormDistrictProps {
+  form: {
+    setValue: any;
+    watch: any;
+    control: any;
+  };
+  setIsAddingVillage: (value: boolean) => void;
+}

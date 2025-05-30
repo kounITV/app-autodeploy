@@ -1,11 +1,13 @@
 "use client"
 
 import type React from "react"
-import { ImagePlus, X, Maximize2, Trash2, ZoomIn, ZoomOut, RotateCcw, Download, RotateCw } from "lucide-react"
+import { ImagePlus, Trash2, Crop, Check, ZoomIn, ZoomOut } from "lucide-react"
 import Image from "next/image"
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { cn } from "@/lib/utils"
 import { Input, Button, Dialog, DialogContent } from "@/components/ui"
+import Cropper from "react-easy-crop";
+import { getCroppedImg } from "@/lib/crop-image";
 
 interface ImageInputProps {
   iconImage?: React.ReactNode
@@ -15,10 +17,14 @@ interface ImageInputProps {
 export const ImageInput = ({ iconImage, label = "ເລືອກຮູບພາບ", ...props }: ImageInputProps) => {
   const displayImage = props.value ?? ""
   const typeOf = typeof displayImage
+  const inputRef = useRef<HTMLInputElement>(null)
   const [preview, setPreview] = useState(displayImage)
+  const [fileName, setFileName] = useState<string>("")
   const [showFullPreview, setShowFullPreview] = useState(false)
+  const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1)
   const [rotation, setRotation] = useState(0)
+  const [croppedAreaPixels, setCroppedAreaPixels] = useState(null)
   useEffect(() => {
     if (typeOf === "string") {
       setPreview(props.value)
@@ -30,11 +36,32 @@ export const ImageInput = ({ iconImage, label = "ເລືອກຮູບພາ�
       setRotation(0)
     }
   }, [showFullPreview])
+  useEffect(() => {
+    if (typeOf === "string" && props.value !== preview) {
+      setPreview(props.value)
+    }
+  }, [props.value])
+
+  const onCropComplete = (_:any, croppedAreaPixels: any) => {
+    setCroppedAreaPixels(croppedAreaPixels)
+  }
+  
+  const handleCropSave = async () => {
+    if (!croppedAreaPixels) return
+    const croppedImage = await getCroppedImg(preview, croppedAreaPixels)
+    const objectUrl = URL.createObjectURL(croppedImage)
+    setPreview(objectUrl)
+    setShowFullPreview(false)
+    if (props.onChange) props.onChange(croppedImage)
+  }
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files && event.target.files.length > 0 ? event.target.files[0] : undefined
     const displayUrl = file ? URL.createObjectURL(file) : ""
     setPreview(displayUrl)
+    if (file) {
+      setFileName(file.name)
+    }
     if (props.onChange && file) {
       props.onChange(file)
     } else if (props.onChange) {
@@ -46,6 +73,7 @@ export const ImageInput = ({ iconImage, label = "ເລືອກຮູບພາ�
     e.stopPropagation()
     e.preventDefault()
     setPreview("")
+    if (inputRef.current) inputRef.current.value = ""
     if (props.onChange) {
       props.onChange(undefined)
     }
@@ -58,7 +86,7 @@ export const ImageInput = ({ iconImage, label = "ເລືອກຮູບພາ�
   }
 
   const handleZoomIn = () => setZoom((prev) => Math.min(prev + 0.25, 3))
-  const handleZoomOut = () => setZoom((prev) => Math.max(prev - 0.25, 0.5))
+  const handleZoomOut = () => setZoom((prev) => Math.max(prev - 0.25, 1))
   const handleResetZoom = () => {
     setZoom(1)
     setRotation(0)
@@ -78,151 +106,63 @@ export const ImageInput = ({ iconImage, label = "ເລືອກຮູບພາ�
     link.click()
     document.body.removeChild(link)
   }
-
+  console.log(fileName)
   return (
-    <div className="space-y-2">
-      <label
-        className={cn(
-          "relative block border-2 border-dashed rounded-lg w-full h-96 group text-center hover:border-primary focus-within:border-primary transition-all duration-300 ease-in-out cursor-pointer overflow-hidden",
-          props.className,
-        )}
+    <div className="space-y-2 relative">
+      <Button
+        type="button"
+        onClick={() => inputRef.current?.click()}
+        className="bg-primary text-white hover:bg-primary/90"
       >
-        {preview ? (
-          <div className="relative w-full h-full">
-            <Image
-              src={preview ?? "/fallback.jpg"}
-              alt="Preview image"
-              className={cn("object-cover w-full h-full")}
-              width={props.width ?? 1000}
-              height={props.height ?? 500}
-            />
-            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100">
-              <div className="flex gap-2">
-                <Button
-                  type="button"
-                  size="icon"
-                  variant="secondary"
-                  className="rounded-full bg-white/90 hover:bg-white text-gray-800"
-                  onClick={handleExpandImage}
-                >
-                  <Maximize2 className="h-4 w-4" />
-                </Button>
-                <Button
-                  type="button"
-                  size="icon"
-                  variant="destructive"
-                  className="rounded-full"
-                  onClick={handleRemoveImage}
-                >
-                  <Trash2 className="h-4 w-4" />
-                </Button>
-              </div>
-            </div>
-          </div>
-        ) : (
-          <div className="flex flex-col items-center justify-center h-full p-6 bg-muted/20">
-            <div className="w-20 h-20 rounded-full bg-muted/30 flex items-center justify-center mb-4">
-              {iconImage || <ImagePlus className="h-10 w-10 text-muted-foreground" />}
-            </div>
-            <p className="text-sm text-muted-foreground mb-2">{label ?? "ເລືອກຮູບພາບ"}</p>
-            <p className="text-xs text-muted-foreground max-w-xs text-center">ດຶງໄຟລ໌ມາທີ່ນີ້ ຫຼື ຄລິກເພື່ອເລືອກໄຟລ໌ (PNG, JPG)</p>
-          </div>
-        )}
+        ເລືອກຮູບພາບ
+      </Button>
 
-        <Input
-          type="file"
-          className="hidden"
-          {...props.rest}
-          accept="image/png, image/jpeg, image/jpg"
-          onChange={handleFileChange}
-        />
-      </label>
+      <Input
+        ref={inputRef}
+        type="file"
+        className="hidden"
+        accept="image/png, image/jpeg, image/jpg"
+        onChange={(e) => {
+          if (e.target.files && e.target.files.length > 0) {
+            handleFileChange(e);
+            setShowFullPreview(true);
+          }
+        }}
+      />
+      {fileName && (
+        <div className="flex gap-1 absolute -bottom-10 bg-secondary rounded-md p-1">
+          <div className="text-sm text-gray-700 w-[79px] underline cursor-pointer overflow-hidden text-ellipsis whitespace-nowrap" onClick={() => setShowFullPreview(true)}>
+            {fileName}
+          </div>
+          <button onClick={(e) => {
+            handleRemoveImage(e)
+            setFileName("")
+          }}>X</button>
+        </div>
+      )}
       <Dialog open={showFullPreview} onOpenChange={setShowFullPreview}>
-        <DialogContent className="max-w-4xl p-1 bg-black/90">
-          <div className="relative w-full h-[80vh] overflow-hidden">
-            <div className="absolute inset-0 flex items-center justify-center overflow-auto">
-              {preview && (
-                <div
-                  style={{
-                    transform: `scale(${zoom}) rotate(${rotation}deg)`,
-                    transition: "transform 0.2s ease",
-                  }}
-                >
-                  <Image
-                    src={preview || "/placeholder.svg"}
-                    alt="Full preview"
-                    className="object-contain"
-                    width={1200}
-                    height={800}
-                  />
-                </div>
-              )}
-            </div>
-            <div className="absolute top-2 right-2 flex gap-2">
-              <Button
-                type="button"
-                size="icon"
-                variant="outline"
-                className="rounded-full bg-black/50 hover:bg-black/70 border-none text-white"
-                onClick={() => setShowFullPreview(false)}
-              >
-                <X className="h-4 w-4" />
-              </Button>
-            </div>
-            <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2 bg-black/50 p-2 rounded-full">
-              <Button
-                type="button"
-                size="icon"
-                variant="outline"
-                className="rounded-full bg-black/50 hover:bg-black/70 border-none text-white h-8 w-8"
-                onClick={handleZoomOut}
-                title="Zoom Out"
-              >
-                <ZoomOut className="h-4 w-4" />
-              </Button>
-              <Button
-                type="button"
-                size="icon"
-                variant="outline"
-                className="rounded-full bg-black/50 hover:bg-black/70 border-none text-white h-8 w-8"
-                onClick={handleResetZoom}
-                title="Reset"
-              >
-                <RotateCcw className="h-4 w-4" />
-              </Button>
-              <Button
-                type="button"
-                size="icon"
-                variant="outline"
-                className="rounded-full bg-black/50 hover:bg-black/70 border-none text-white h-8 w-8"
-                onClick={handleZoomIn}
-                title="Zoom In"
-              >
-                <ZoomIn className="h-4 w-4" />
-              </Button>
-              <Button
-                type="button"
-                size="icon"
-                variant="outline"
-                className="rounded-full bg-black/50 hover:bg-black/70 border-none text-white h-8 w-8"
-                onClick={handleRotate}
-                title="Rotate"
-              >
-                <RotateCw className="h-4 w-4" />
-              </Button>
-              <Button
-                type="button"
-                size="icon"
-                variant="outline"
-                className="rounded-full bg-black/50 hover:bg-black/70 border-none text-white h-8 w-8"
-                onClick={handleDownload}
-                title="Download"
-              >
-                <Download className="h-4 w-4" />
-              </Button>
-            </div>
-            <div className="absolute bottom-16 left-1/2 transform -translate-x-1/2 bg-black/50 px-2 py-1 rounded text-xs text-white">
-              {Math.round(zoom * 100)}% | {rotation}°
+        <DialogContent className="max-w-4xl p-1">
+          <div className="relative w-full h-[80vh]">
+            <Cropper
+              image={preview}
+              crop={crop}
+              zoom={zoom}
+              rotation={rotation}
+              aspect={3.8 / 5}
+              onCropChange={setCrop}
+              onZoomChange={setZoom}
+              onRotationChange={setRotation}
+              onCropComplete={onCropComplete}
+              objectFit="vertical-cover"
+            />
+            <div className="absolute bottom-3 right-3 flex gap-2">
+              <Button variant="secondary" onClick={handleZoomOut}><ZoomOut size={"medium"} /></Button>
+              <Button variant="secondary" onClick={handleZoomIn}><ZoomIn size={"medium"} /></Button>
+              <Button onClick={(e) => {
+                handleRemoveImage(e)
+                setShowFullPreview(false)
+                }}>ຍົກເລີກ</Button>
+              <Button onClick={handleCropSave} className="flex gap-2"><Check size="medium" />ຢືນຢັນ</Button>
             </div>
           </div>
         </DialogContent>

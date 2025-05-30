@@ -12,7 +12,7 @@ import useVillageTable from "./hook/useTable";
 import { CreateButton } from "@/components/containers/create-button";
 
 export default function VillageList() {
-  const { result, meta, updatePagination, updateSearch, filter } = useVillageTable();
+  const { result, meta, updatePagination, updateSearch, filter, loading } = useVillageTable();
   const { result: aggregation } = useVillageAggregation();
   return (
     <div className="pl-4 space-y-2">
@@ -26,7 +26,7 @@ export default function VillageList() {
       </div>
       <div className="space-y-4">
         <DataTableToolbar updateSearch={updateSearch} filter={filter} />
-        <DataTable columns={columnsVillage} data={result} meta={meta} updatePagination={updatePagination} />
+        <DataTable columns={columnsVillage} data={result} meta={meta} updatePagination={updatePagination} loading={loading} />
       </div>
     </div>
   );

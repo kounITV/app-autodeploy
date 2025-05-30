@@ -21,6 +21,10 @@ export const companyFormSchema = z.object({
   businessRegisterBy: z.string().min(2, {
     message: "ອອດໂດຍ",
   }),
+  businessType: z.string().min(2, {
+    message: "ລະບຸປະເພດຫົວໜ່ວຍທຸລະກິດ",
+  }),
+  customBusinessType: z.string().optional(),
   businessCode: z.string().regex(/^[A-Z0-9]*$/, {
     message: "ເລກທະບຽນ",
   }).optional(),
@@ -59,4 +63,6 @@ export const companyDefaultValues = {
   businessRegisterBy: "ministry",
   businessCode: "",
   companyFile: [],
+  businessType: "",
+  customBusinessType: "",
 };

@@ -15,6 +15,19 @@ import { IApplication } from "../application/type"
 export default function BarcodeScannerPage() {
   const [barcode, setBarcode] = useState<number | undefined>(0);
   const { result, filter } = fetchApplicationProfile();
+
+  const extractRealBarcode = (value: string): number | undefined => {
+    if (!value) {
+      return undefined;
+    }
+    const length = value.length;
+    if (length >= 7) {
+      const startIndex = length - 7;
+      const sliced = value.slice(startIndex);
+      return Number(sliced);
+    }
+    return Number(value);
+  };
   const splitData = (data: IApplication[]) => {
     const dataWithImage = data.map(({ id, profile, ...rest }) => ({
       id,
@@ -33,18 +46,18 @@ export default function BarcodeScannerPage() {
   const { dataWithImage, dataWithOldImage } = splitData(result);
   const handleScan = (result: { text: string; format: string }) => {
     const value = result.text;
-    const numericValue = value ? Number(value) : undefined;
-    setBarcode(numericValue);
-    if (value.length === 7) {
-      filter.setBarcodeFilter(numericValue);
+    const realBarcode = extractRealBarcode(value);
+    setBarcode(realBarcode);
+    if (realBarcode !== undefined) {
+      filter.setBarcodeFilter(realBarcode);
     }
-  }
+  };
   const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    const numericValue = value ? Number(value) : undefined;
-    setBarcode(numericValue);
-    if (value.length === 7) {
-      filter.setBarcodeFilter(numericValue);
+    const realBarcode = extractRealBarcode(value);
+    setBarcode(realBarcode ?? Number(value));
+    if (realBarcode !== undefined) {
+      filter.setBarcodeFilter(realBarcode);
     }
   };
 

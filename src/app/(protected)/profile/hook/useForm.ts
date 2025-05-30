@@ -16,6 +16,13 @@ export const useProfileForm = ({ handleNext }: { handleNext: () => void }) => {
   });
   const onSubmit = async (data: z.infer<typeof profileFormSchema>) => {
     try {
+      const { identityNumber, identityType, applicationNumber } = data;
+      const checkResponse: any = await apiClient.post("/profile-check-existence", {
+        data: { identityNumber, identityType, applicationNumber },
+      });
+      if (checkResponse?.data?.identityExists) {
+        return;
+      }
       const formData = new FormData();
       appendObjectFields({ formData, data, excludeKeys: ["image", "oldImage"] });
       if (data.image instanceof File) {
@@ -31,9 +38,28 @@ export const useProfileForm = ({ handleNext }: { handleNext: () => void }) => {
       showToast({ type: "success", title: "ລົງທະບຽນບຸກຄົນໃໝ່ສໍາເລັດ" });
       queryClient.invalidateQueries({ queryKey: ["profiles"] });
       form.reset();
+      form.setValue("applicationNumber", data.applicationNumber);
+      form.setValue("phoneNumber", data.phoneNumber);
+      form.setValue("overseasProvince", data.overseasProvince);
       handleNext();
-    } catch {
+    } catch(error: any) {
       showToast({ type: "error", title: "ບໍ່ສາມາດລົງທະບຽນບຸກຄົນໃໝ່ໄດ້" });
+      if (error.data.identityNumber || error.data.identityType ) {
+        form.setError("identityNumber", {
+          type: "manual",
+          message: `${error.data.identityNumber}`,
+        });
+        form.setError("identityType", {
+          type: "manual",
+          message: `${error.data.identityType}`,
+        });
+      }
+      if (error.data.applicationNumber) {
+        form.setError("applicationNumber", {
+          type: "manual",
+          message: `${error.data.applicationNumber}`,
+        });
+      }
     }
   };
   return { form, onSubmit };

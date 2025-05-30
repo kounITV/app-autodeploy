@@ -106,7 +106,7 @@ const DateTimePicker = React.forwardRef<HTMLDivElement, DateTimePickerProps>(
           disabled && "opacity-50 cursor-not-allowed",
         )}
       >
-        <Popover open={open} onOpenChange={setOpen}>
+        {/* <Popover open={open} onOpenChange={setOpen}>
           <PopoverTrigger asChild>
             <Button
               {...buttonProps}
@@ -123,7 +123,7 @@ const DateTimePicker = React.forwardRef<HTMLDivElement, DateTimePickerProps>(
               <Calendar {...calendarProps} />
             </div>
           </PopoverContent>
-        </Popover>
+        </Popover> */}
         <DateField {...fieldProps} disabled={disabled} />
 
       </div>

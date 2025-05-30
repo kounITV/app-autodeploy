@@ -42,6 +42,10 @@ export const columnsProfile: Array<ColumnDef<IProfile>> = [
     header: "ບາໂຄດ",
   },
   {
+    accessorKey: "identityNumber",
+    header: "ເລກທີເອກະສານ",
+  },
+  {
     accessorKey: "phoneNumber",
     header: "ເບີໂທລະສັບ",
   },

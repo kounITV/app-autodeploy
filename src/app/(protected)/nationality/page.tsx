@@ -11,7 +11,7 @@ import { usenationalityAggregation } from "./hook/useAggregation";
 import usenationalityTable from "./hook/useTable";
 
 export default function nationalityList() {
-  const { result, meta, updatePagination, updateSearch, filter } = usenationalityTable();
+  const { result, meta, updatePagination, updateSearch, filter, loading } = usenationalityTable();
   const { result: aggregation } = usenationalityAggregation();
   return (
     <div className="pl-4 space-y-2">
@@ -24,7 +24,7 @@ export default function nationalityList() {
       </div>
       <div className="space-y-4">
         <DataTableToolbar updateSearch={updateSearch} filter={filter} />
-        <DataTable columns={columnsnationality} data={result} meta={meta} updatePagination={updatePagination} />
+        <DataTable columns={columnsnationality} data={result} meta={meta} updatePagination={updatePagination} loading={loading} />
       </div>
     </div>
   );

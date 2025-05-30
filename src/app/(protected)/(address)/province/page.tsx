@@ -10,7 +10,7 @@ import { useProvinceAggregation } from "./hook/useAggregation";
 import useProvinceTable from "./hook/useTable";
 
 export default function ProvinceList() {
-  const { result, meta, updatePagination, updateSearch, filter } = useProvinceTable();
+  const { result, meta, updatePagination, updateSearch, filter, loading } = useProvinceTable();
   const { result: aggregation } = useProvinceAggregation();
   return (
     <div className="pl-4 space-y-2">
@@ -23,7 +23,7 @@ export default function ProvinceList() {
       </div>
       <div className="space-y-4">
         <DataTableToolbar updateSearch={updateSearch} filter={filter} />
-        <DataTable columns={columnsProvince} data={result} meta={meta} updatePagination={updatePagination} />
+        <DataTable columns={columnsProvince} data={result} meta={meta} updatePagination={updatePagination} loading={loading} />
       </div>
     </div>
   );

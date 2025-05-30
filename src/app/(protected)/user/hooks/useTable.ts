@@ -34,6 +34,9 @@ const useUserTable = () => {
   const { page, limit, updatePagination, resetPage } = usePaginationStore();
   const { search, updateSearch } = useSearchStore();
   const [genderFilter, setGenderFilter] = useState<string>("");
+  const [yearFilter, setYearFilter] = useState<string>("")
+  const [dateFilter, setDateFilter] = useState<Date | undefined>()
+  
   const [debouncedSearch] = useDebounce(search, DEBOUNCE_DELAY);
   const query = useQuery<IUserResponse, Error>({
     queryKey: ["users", page, limit, debouncedSearch, excludeDelete, genderFilter],
@@ -51,6 +54,10 @@ const useUserTable = () => {
     filter: {
       genderFilter,
       setGenderFilter,
+      yearFilter,
+      setYearFilter,
+      dateFilter,
+      setDateFilter,
     },
     loading: query.isLoading,
     error: query.error instanceof Error ? query.error.message : null,

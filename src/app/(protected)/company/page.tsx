@@ -12,7 +12,7 @@ import { useCompanyAggregation } from "./hook/useAggregation";
 import useCompanyTable from "./hook/useTable";
 
 export default function CompanyList() {
-  const { result, meta, updatePagination, updateSearch, filter } = useCompanyTable();
+  const { result, meta, updatePagination, updateSearch, filter, loading } = useCompanyTable();
   const { result: aggregation } = useCompanyAggregation();
   return (
     <div className="pl-4 space-y-2">
@@ -25,7 +25,7 @@ export default function CompanyList() {
       </div>
       <div className="space-y-4">
         <DataTableToolbar updateSearch={updateSearch} filter={filter} />
-        <DataTable columns={columnsCompany} data={result} meta={meta} updatePagination={updatePagination} />
+        <DataTable columns={columnsCompany} data={result} meta={meta} updatePagination={updatePagination} loading={loading} />
       </div>
     </div>
   );

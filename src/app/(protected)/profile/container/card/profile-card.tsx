@@ -22,6 +22,7 @@ import { CalendarDays, FileCode, Globe, Home, BadgeIcon as IdCard, MapPin, MoreV
 import { type IProfile } from "../../type";
 import { formatDate } from "@/lib/format-date";
 import { getIdentityLabel } from "../../lib";
+import { formatDateString } from "src/app/(protected)/(application)/renew/container/barcode";
 
 const ProfileDetail = ({ icon: Icon, label, value }: { icon: React.ComponentType, label: string, value?: string | number }) => (
   <div className="flex items-center gap-2">
@@ -66,7 +67,7 @@ interface ProfileCardProps {
 }
 export function ProfileCard({ profile, onEdit, onDelete, onApplication, renewable = false }: ProfileCardProps) {
   const firstName = `${profile?.firstName || ""} ${profile?.lastName || ""}`;
-  const imageSrc = profile?.image || "/thavisoukmnlv.jpg";
+  const imageSrc = profile?.image;
   const nationality = profile?.nationality.code || "";
   return (
     <Card className="w-full sm:w-96">
@@ -102,8 +103,8 @@ export function ProfileCard({ profile, onEdit, onDelete, onApplication, renewabl
           <div className="grid gap-1 text-sm">
             <ProfileDetail icon={IdCard} label={`${getIdentityLabel(profile?.identityType)}: ${profile?.identityNumber}`} value="" />
             <div className="grid grid-cols-2 gap-2 text-muted-foreground">
-              <span>ອອກ: {profile?.identityIssueDate}</span>
-              <span>ໝົດອາຍຸ: {profile.identityExpiryDate}</span>
+              <span>ອອກ: {formatDateString(profile?.identityIssueDate)}</span>
+              <span>ໝົດອາຍຸ: {formatDateString(profile.identityExpiryDate)}</span>
             </div>
           </div>
         </div>

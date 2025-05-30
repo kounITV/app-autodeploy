@@ -6,20 +6,22 @@ import { type UseFormReturn } from "react-hook-form";
 import { type z } from "zod";
 import { type villageFormSchema } from "./schema";
 import useeDistrictCombobox from "src/app/(protected)/(address)/district/hook/useDistrictCombobox";
+import { cn } from "@/lib/utils";
 
-const formTitle = "ແກ້ໄຂຈັດການເມືອງ";
-const formSubtitle = "ກະລຸນາປ້ອນຂໍ້ມູນຂອງຈັດການເມືອງ";
+const formTitle = "ເພິ່ມ ຫຼື ແກ້ໄຂບ້ານ";
+const formSubtitle = "ກະລຸນາປ້ອນຂໍ້ມູນຂອງຈັດການບ້ານ";
 
 interface DistrictFormProps {
   form: UseFormReturn<z.infer<typeof villageFormSchema>>;
   onSubmit: (data: z.infer<typeof villageFormSchema>) => Promise<void>;
+  className?: string;
 }
 
-const DistrictForm: React.FC<DistrictFormProps> = ({ form, onSubmit }) => {
+const DistrictForm: React.FC<DistrictFormProps> = ({ form, onSubmit, className }) => {
   const { result: districtOptions } = useeDistrictCombobox({});
   return (
     <Form formInstance={form} onSubmit={onSubmit} title={formTitle} subtitle={formSubtitle}>
-      <div className="grid gap-4 sm:grid-cols-2">
+      <div className={cn("grid gap-4 md:grid-cols-2", className)}>
         <Form.Field name="villageLao" control={form.control} label="ຊື່ບ້ານພາສາລາວ">
           <Form.Input.Input placeholder="ຊື່ບ້ານພາສາລາວ" />
         </Form.Field>

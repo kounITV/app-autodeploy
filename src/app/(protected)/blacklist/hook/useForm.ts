@@ -13,15 +13,32 @@ export const useBlacklistProfileForm = ({ handleNext }: { handleNext: () => void
   });
   const onSubmit = async (data: z.infer<typeof checkBlacklistFormSchema>) => {
     try {
+      const { identityNumber, identityType } = data;
       const response = await apiClient.get<ApiResponse<string>>("/backlist-check", { params: data });
       if (response.status === "exists" || response.status === "blacklisted") {
         form.setError("root", { type: "manual", message: response.message });
       }
+      const checkResponse: any = await apiClient.post("/profile-check-existence", {
+        data: { identityNumber, identityType },
+      });
+      if (checkResponse?.data?.identityExists) {
+        return;
+      }
       if (response.status === "ok") {
         handleNext();
       }
-    } catch {
+    } catch(error: any) {
       showToast({ type: "error", title: "ລະບົບຂັດຂ້ອງ" });
+      if (error.data.identityNumber || error.data.identityType ) {
+        form.setError("identityNumber", {
+          type: "manual",
+          message: `${error.data.identityNumber}`,
+        });
+        form.setError("identityType", {
+          type: "manual",
+          message: `${error.data.identityType}`,
+        });
+      }
     }
   };
   return { form, onSubmit };

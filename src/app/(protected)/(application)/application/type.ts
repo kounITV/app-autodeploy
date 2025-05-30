@@ -67,3 +67,8 @@ export interface IApplicationAggregation {
         TotalActive: number;
     };
 }
+export interface ILastApplication {
+    id: number,
+    issueDate: string,
+    expirationDate: string, 
+}

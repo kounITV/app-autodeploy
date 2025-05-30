@@ -4,6 +4,7 @@ import { type UseFormReset } from "react-hook-form";
 export interface RoleLabels {
   STAFF: string;
   ADMIN: string;
+  SUPER_ADMIN: string;
   FINANCE: string
   POLICE_OFFICER: string
   POLICE_COMMANDER: string

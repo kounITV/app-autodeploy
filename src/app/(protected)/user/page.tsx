@@ -7,9 +7,16 @@ import { RoleBasedGuard } from "@/lib/ability";
 import { DataTableToolbar } from "../blacklist/filter";
 import { columnsUser } from "./container/table/columns";
 import useUserTable from "./hooks/useTable";
+import { useEffect } from "react";
 
 export default function UserPage() {
-  const { result, meta, updatePagination, updateSearch, filter } = useUserTable();
+  const { result, meta, updatePagination, updateSearch, filter, loading } = useUserTable();
+  useEffect(() => {
+    updateSearch("");
+    filter.setDateFilter(undefined);
+    filter.setYearFilter("")
+    filter.setGenderFilter("")
+  }, []);
   return (
     <RoleBasedGuard subject="user" action="read" fallback={<div>You don&apos;t have permission to view this page</div>}>
       <div className="pl-4 space-y-2">
@@ -19,7 +26,7 @@ export default function UserPage() {
         </div>
         <div className="space-y-4">
           <DataTableToolbar updateSearch={updateSearch} filter={filter} />
-          <DataTable columns={columnsUser} data={result} meta={meta} updatePagination={updatePagination} />
+          <DataTable columns={columnsUser} data={result} meta={meta} updatePagination={updatePagination} loading={loading}/>
         </div>
       </div>
     </RoleBasedGuard>

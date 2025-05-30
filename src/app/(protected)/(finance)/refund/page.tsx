@@ -13,7 +13,7 @@ export default function RefundPage() {
   const role = getUserRole();
   let refundComponent;
   switch (role) {
-    case "ADMIN":
+    case "SUPER_ADMIN":
       refundComponent = <RefundReport />;
       break;
     case "FINANCE":
@@ -31,27 +31,27 @@ export default function RefundPage() {
 }
 
 function RefundRequest() {
-  const { result, meta } = useRefundTable();
+  const { result, meta, loading } = useRefundTable();
   return (
     <div className="pl-4 space-y-2">
       <div className="flex justify-between items-center">
         <TitleLabel title='ຂໍຄືນເງິນ' subtitle='ນີ້ແມ່ນລາຍການຂໍ້ມູນຂໍຄືນເງິນ 10 ລາຍການຫຼ້າສຸດ!' />
       </div>
       <div className="space-y-4">
-        <DataTable columns={columnsRefund} data={result} meta={meta}/>
+        <DataTable columns={columnsRefund} data={result} meta={meta} loading={loading}/>
       </div>
     </div>
   );
 }
 function RefundReport() {
-  const { result: resultReport, meta: metaReport, updatePagination } = useTable<IRefundReport>({ resource: "/refund" });
+  const { result: resultReport, meta: metaReport, updatePagination, loading } = useTable<IRefundReport>({ resource: "/refund" });
   return (
     <div className="pl-4 space-y-2">
       <div className="flex justify-between items-center">
         <TitleLabel title='ລາຍງານທີອະນຸມັດແລ້ວ' subtitle='ນີ້ແມ່ນລາຍງານທິອະນຸມັດແລ້ວ 10 ລາຍການຫຼ້າສຸດ!' />
       </div>
       <div className="space-y-4">
-        <DataTable columns={columnsRefundReport} data={resultReport} meta={metaReport} updatePagination={updatePagination}/>
+        <DataTable columns={columnsRefundReport} data={resultReport} meta={metaReport} updatePagination={updatePagination} loading={loading} />
       </div>
     </div>
   );

@@ -1,32 +1,38 @@
 
 import Image from "next/image";
 import { IApplication } from "../../application/type";
-import { Barcode, formatDateString } from "./barcode";
+import { Barcode, formatDateString2, formatDateString, QRcode } from "./barcode";
 import { cn } from "@/lib/utils";
+import { useSession } from "next-auth/react";
 
-export function StayPermitCard({ application }: { application?: IApplication }) {
+export function StayPermitCard({ application, bgOptions, barCodeOptions }: { application?: IApplication, bgOptions?: string, barCodeOptions?: string }) {
   const { expirationDate = "", issueDate = "" } = application || {};
   const profile = application?.profile?.image
-  const applicationType = application?.number?.price.type === "BLUE"
+  const applicationType = application?.number?.price.type === "BLUE";
+  const bgColor = bgOptions === "print:bg-[#B69E80]"? "bg-amber-200": "";
+  const isQRcode = barCodeOptions === "qrcode"
   return (
     <div className='flex justify-center box-border font-Phetsarath'>
-      <div className='grid justify-center text-black'>
-        <div className={cn("bg-amber-200 text-[10.8px] relative box-border p-[6px] pl-[8.55px] w-[323.5px] h-[204px] rounded-lg print:w-full print:h-full print:absolute print:top-[-2.5px] print:left-0 print:m-0 print:rounded-none print:bg-transparent", applicationType ? "print:px-[6.7px]" : "print:px-[7.6px]")}>
+      <div className='grid justify-center text-[#000000]'>
+        <div className={cn(`${bgColor} text-[10.8px] scale-[1.9] print:scale-100 relative box-border p-[6px] pl-[8.55px] w-[323.5px] h-[204px] mix-blend-multiply rounded-lg print:w-fit print:h-[101%] print:absolute print:top-[-2.5px] print:left-0 print:m-0 print:rounded-none ${bgOptions}`, applicationType ? "print:px-[6.7px]" : "print:px-[7.6px]")}>
           <div className="p-0 pb-[4px]">
-            <div className='leading-[1.2] print:leading-[1.2] '>
-              <div className="text-center font-semibold tracking-wider">ສາທາລະນະລັດ ປະຊາທິປະໄຕ ປະຊາຊົນລາວ</div>
-              <div className="text-center font-semibold pb-[2px] print:pb-[2px] leading-tight font-TimesNewRoman">Lao People&apos;s Democratic Republic</div>
-              <div className="text-center font-semibold tracking-wide">ບັດຢັ້ງຢືນການພັກເຊົາຊົ່ວຄາວ</div>
-              <div className="text-center font-semibold tracking-tight font-TimesNewRoman ">Temporary Stay Card</div>
+            <div className='leading-[1]'>
+              <div className="text-center font-bold tracking-tight leading-[1.2] text-[10pt]">ສາທາລະນະລັດ ປະຊາທິປະໄຕ ປະຊາຊົນລາວ</div>
+              <div className="text-center font-bold pb-[2px] print:pb-[2px] leading-[1] print:leading-[1.25] font-TimesNewRoman text-[7.5pt]">Lao People&apos;s Democratic Republic</div>
+              <div className="text-center font-bold tracking-normal flex justify-center text-[8pt] text-[#000000]">
+                ບັດຢັ້ງຢືນການພັກເຊົາຊົ່ວຄາວ&nbsp;/&nbsp;
+                <div className="text-center font-bold tracking-tight font-TimesNewRoman text-[#000000]">Temporary Stay Card</div>
+              </div>
             </div>
-            <div className="absolute top-2 left-5 print:top-2 print:left-5">
-              <Image src={"/police_logo.png"} alt="Police Logo" width={38} height={30} />
+            <div className="absolute top-2 left-3 print:top-2 print:left-3">
+              <Image src={"/police_logo.png"} alt="Police Logo" width={38} height={30} className="bg-none mix-blend-multiply"/>
             </div>
           </div>
-          <div className="p-0 font-semibold">
-            <div className="w-full flex justify-between gap-0">
-              <div className={cn("pr-[2px] print:pr-1", applicationType ? "print:pt-[2px]" : "")}>
-                <div className="w-[66.1px] h-[83.5px] print:w-[66.5px] print:h-[85px]">
+          <div className="p-0 font-normal">
+            <div className="w-full flex justify-between gap-1">
+              <div className={cn("pr-[2px] print:pr-2 print:pl-[1px] flex items-center print:items-start print:mt-[24px]", applicationType ? "print:pt-[2px]" : "")}>
+                {/* <div className="w-[66.1px] h-[83.5px] print:w-[66.5px] print:h-[85px]"> */}
+                <div className="w-[66.1px] h-[83.5px] print:w-[80px] print:h-[100px]">
                   {profile ? (
                     <Image
                       src={profile}
@@ -37,18 +43,18 @@ export function StayPermitCard({ application }: { application?: IApplication }) 
                       className="object-fill h-full w-full"
                     />
                   ) : (
-                    <div className="w-full h-full bg-white"></div>
+                    <div className="w-full h-full bg-white">
+                    </div>
                   )}
                 </div>
               </div>
               <ProfileSection application={application} />
               <ContactSection application={application} />
             </div>
-            <BarcodeSection barcode={application?.profile?.barcode} />
-            <DateSection expirationDate={expirationDate} issueDate={issueDate} />
-            <div className="absolute flex flex-col items-center right-5 bottom-[16px] z-0 leading-[0.7]">
-              <Image src={"/immigration.png"} alt="Logo" width={50} height={50} />
-              <p className="text-red-600 text-[6px] font-TimesNewRoman">Phonethip PHOMPHAKDY</p>
+            <BarcodeSection expirationDate={expirationDate} issueDate={issueDate} barcode={application?.profile?.barcode} isQRcode={isQRcode} />
+            <DateSection expirationDate={expirationDate} issueDate={issueDate} isQRcode={isQRcode} barcode={application?.profile?.barcode}/>
+            <div className="absolute flex flex-col items-center right-2 print:right-3 bottom-[6px] print:bottom-[8px] z-0 leading-[0.7] font-bold">
+              <Image src={"/immigration2.png"} alt="Logo" width={100} height={100}/>
             </div>
           </div>
         </div>
@@ -58,42 +64,53 @@ export function StayPermitCard({ application }: { application?: IApplication }) 
 }
 
 export function ProfileSection({ application }: { application?: IApplication }) {
-  const { firstName = "", lastName = "", dateOfBirth = "", identityType = "" } = application?.profile || {};
+  const { firstName = "", lastName = "", dateOfBirth = "", identityType = "", gender } = application?.profile || {};
+  const title = (gender === "MALE" || gender === "M") ? "MS" : "MR"
   return (
-    <div className="w-[145px] leading-[1.45] print:leading-[1.39] print:tracking-tight">
+    <div className="w-[165px] leading-[0.98] print:leading-[1.14] print:tracking-tight font-bold">
       <div>
         <div>
-          <p className="text-start text-[8px]">ຊື່ / <span className="font-TimesNewRoman">Name</span>:&nbsp;{firstName}</p>
-          <p className="text-start text-[8px]">ນາມສະກຸນ / <span className="font-TimesNewRoman">Surname</span>:&nbsp;{lastName}</p>
-        </div>
-      </div>
-      <div className="flex gap-1 items-center">
-        <div>
-          <p className="text-start text-[8px]">ວັນເດືອນປີເກີດ:</p>
-          <p className="text-start text-[8px] font-TimesNewRoman">Birthday:</p>
-        </div>
-        <div>
-          <p className="text-start text-[8px]">{formatDateString(dateOfBirth)}</p>
-        </div>
-      </div>
-      <div className="flex gap-1 items-center">
-        <div>
-          <p className="text-start text-[8px]">ປະເພດເອກະສານເດີນທາງ: </p>
-          <p className="text-start text-[8px]"><span className="font-TimesNewRoman">Type of travel document:</span> {documentType.find((item) => item.value === identityType)?.label || ""}</p>
-        </div>
-      </div>
-      <div className="flex items-center justify-start relative">
-        <div >
-          <p className="text-start text-[8px]">ສະຖານທີ່ເຮັດວຽກຢູ່ຂສພ:</p>
-          <p className="text-start text-[8px] font-TimesNewRoman">Working place in SEZ:</p>
-        </div>
-        <div className="absolute right-0 top-0 transform w-[40%]">
-          <p className="text-start text-[7px] flex-wrap">
-            {application?.company?.name}
+          <p className="text-start text-[7pt] mb-[2.5px]">ຊື່/Name
+            <br></br>
+            <span className="font-TimesNewRoman uppercase text-[7.5pt]">
+              {title}&nbsp;{firstName}
+            </span>
+          </p>
+          <p className="text-start text-[7pt] mb-[2.5px] text-[#000000]">ນາມສະກຸນ/Surname
+            <br></br>
+            <span className="font-TimesNewRoman uppercase text-[7.5pt] text-[#000000]">{lastName}</span>
           </p>
         </div>
       </div>
-      <p className="text-start text-[8px]">ໜ້າທີ່/ <span className="font-TimesNewRoman">Position</span>:&nbsp; {application?.position?.laoName}</p>
+      <div className="flex gap-1 items-center mb-[1px] print:mb-[2px] text-[#000000]">
+        <div>
+          <p className="text-start text-[7pt]">ວັນເດືອນປີເກີດ/Date of Birth:</p>
+          <p className="text-start text-[7pt]">{formatDateString2(dateOfBirth)}</p>
+        </div>
+      </div>
+      <div className="flex gap-1 items-center mb-[1px] print:mb-[2px] text-[#000000]">
+        <div>
+          <p className="text-start text-[7pt] tracking-tighter">ເອກະສານເດີນທາງ/Travel document:</p>
+          <p className="text-start text-[7pt]">{documentType.find((item) => item.value === identityType)?.label || ""}</p>
+        </div>
+      </div>
+      <div className="flex items-center justify-start relative mb-[1px] print:mb-[2px] text-[#000000]">
+        <div >
+          <p className="text-start text-[7pt]">ສະຖານທີ່ພັກເຊົາ/Living place:</p>
+          <p className="text-start text-[7pt] w-[140px] print:w-[146px] overflow-hidden line-clamp-2 pt-[3px]">
+            {/* eslint-disable-next-line no-magic-numbers */}
+            {application?.company?.name ? (
+              /* eslint-disable-next-line no-magic-numbers */
+              application.company.name
+            ) : (
+              /* eslint-disable-next-line no-magic-numbers */
+              application?.village?.villageLao
+            )}
+          </p>
+        </div>
+      </div>
+      <p className="text-start text-[7pt]">ໜ້າທີ່/Position: <span className="font-TimesNewRoman text-[#000000]"></span>
+        {application?.position?.laoName}</p>
     </div>
   );
 }
@@ -102,29 +119,98 @@ const documentType = [
   { value: "nationalId", label: "ບັດປະຈຳຕົວ" },
   { value: "driverLicense", label: "ໃບຂັບຂີ່" },
 ]
-export function BarcodeSection({ barcode }: { barcode?: number }) {
+export function BarcodeSection({ 
+  expirationDate, 
+  issueDate, 
+  barcode, 
+  isQRcode, 
+  applicationType, 
+}: { 
+  expirationDate: string, 
+  issueDate: string,
+  barcode?: number, 
+  isQRcode?: boolean, 
+  applicationType?: string 
+}) {
   const barcodeStr = String(barcode);
+  const { data: session } = useSession();
+  const officeId = session?.user?.officeId;
+  const officeIdStr = officeId === null ? "000" : String(officeId).padStart(3, "0");
+  const fullBarcode = officeIdStr + barcodeStr;
   return (
-    <div className="absolute bottom-[6px] print:bottom-[6px] left-2 print:left-[8px] z-0">
-      <div>
-        <p className="text-[8px] leading-tight">ເລກທີ/ຄຕທ</p>
-        <p className="text-[8px] leading-tight font-TimesNewRoman">{barcode}</p>
-      </div>
-      <div className="barcode w-[160px] h-[25px]">
-        <Barcode barcode={barcodeStr} />
-      </div>
+    <div >
+      {isQRcode ? (
+        // yellow card
+        <div className="absolute bottom-[5px] print:bottom-[6px] left-2 print:left-[16px] z-0 text-[#000000] flex items-center gap-[18px] print:gap-[23px]">
+          {/* <div className="absolute bottom-[5px] print:bottom-[6px] left-2 z-0 text-[#000000] flex items-center gap-[24px] print:gap-[37px]"> */}
+          {applicationType ? (
+            <div className="barcode">
+              <QRcode barcode={fullBarcode} bg={"#f56565"}/>
+            </div>
+          ) : (
+            // yellow card
+            <div className="barcode pl-1.5">
+              {/* <div className="barcode"> */}
+              <QRcode barcode={fullBarcode}/>
+            </div>
+          )}
+          {/* yellow card */}
+          <div className="pt-3 flex flex-col gap-[2px]">
+            {/* <div className="pt-4"> */}
+            <p className="text-[7pt] leading-[1] font-bold flex">ອອກໃຫ້ວັນທີ&#x3a;&nbsp;
+              <p className="text-[red]">{formatDateString(issueDate)}</p>
+            </p>
+            <p className="text-[7pt] leading-[1] font-bold flex">ໝົດອາຍຸວັນທີ&#x3a;&nbsp;
+              <p className="text-[red]">{formatDateString(expirationDate)}</p>
+            </p>
+          </div>
+        </div>
+      ):(
+        <div className="absolute bottom-[6px] print:bottom-[6px] left-2 print:left-[8px] z-0 font-bold text-[#000000]">
+          <div>
+            <p className="text-[6pt] leading-[1.1] text-[#000000]">ເລກທີ/ຄຕທ</p>
+            <p className="text-[5.39pt] leading-[1.1] font-TimesNewRoman text-[#000000]">{fullBarcode}</p>
+          </div>
+          <div className="barcode w-[160px] h-[25px]">
+            <Barcode barcode={fullBarcode} />
+          </div>
+        </div>
+      )}
     </div>
   );
 }
 
-export function DateSection({ expirationDate, issueDate }: { expirationDate: string, issueDate: string }) {
+export function DateSection({ 
+  expirationDate, 
+  issueDate,  
+  isQRcode,
+  barcode,
+}: { 
+  expirationDate: string, 
+  issueDate: string,
+  isQRcode: boolean,
+  barcode?: number
+}) {
+  const barcodeStr = String(barcode);
+  const { data: session } = useSession();
+  const officeId = session?.user?.officeId;
+  const officeIdStr = officeId === null ? "000" : String(officeId).padStart(3, "0");
+  const fullBarcode = officeIdStr + barcodeStr;
   return (
-    <div className="flex items-center gap-[2px] absolute top-11 right-2 print:leading-tight print:tracking-tight">
-      <p className="text-start leading-3 text-[8px] font-TimesNewRoman">ກໍານົດອາຍຸ:/<span className="font-TimesNewRoman">Exp</span></p>
-      <div className='print:tracking-tighter'>
-        <p className="text-[red] text-[8px] font-TimesNewRoman">{formatDateString(issueDate)}</p>
-        <p className="text-[red] text-[8px] font-TimesNewRoman">{formatDateString(expirationDate)}</p>
-      </div>
+    <div >
+      {isQRcode ? (
+        <div className="flex items-center gap-[2px] absolute top-14 right-2 print:leading-tight print:tracking-tight font-bold">
+          <span className="text-[7pt] leading-[1] text-[#000000] font-bold">ເລກທີ&#x3a;&nbsp;{fullBarcode}/ຄຕທ</span>
+        </div>
+      ):(
+        <div className="flex items-center gap-[2px] absolute top-12 right-2 print:leading-tight print:tracking-tight font-bold">
+          <p className="text-start leading-3 text-[7pt] text-[#000000]">ກໍານົດອາຍຸ/<span className="font-TimesNewRoman">Exp :</span></p>
+          <div className='print:tracking-tighter text-[#000000]'>
+            <p className="text-[red] text-[6pt] font-TimesNewRoman">{formatDateString(issueDate)}</p>
+            <p className="text-[red] text-[6pt] font-TimesNewRoman">{formatDateString(expirationDate)}</p>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -132,41 +218,36 @@ export function DateSection({ expirationDate, issueDate }: { expirationDate: str
 export function ContactSection({ application }: { application?: IApplication }) {
   const { ethnicity, nationality, identityNumber = "" } = application?.profile || {};
   return (
-    <div className='w-[100px] leading-[1.45] print:leading-[1.39]'>
-      <div className="flex gap-1 items-center">
-        <div>
-          <p className="text-start text-[8px]">ເຊື້ອຊາດ:</p>
-          <p className="text-start text-[8px] font-TimesNewRoman">Race:</p>
+    <div className='w-[100px] print:leading-[1.39] pt-6 pl-4 font-bold'>
+      <div className="pb-[2px] text-[#000000]">
+        <div className="flex items-center">
+          <p className="flex items-center text-start text-[7pt] leading-[1.2]">ເຊື້ອຊາດ/
+            <span className="text-[7pt] font-TimesNewRoman">Race:</span>
+          </p>
+          {/* <p >Race:</p> */}
         </div>
         <div>
-          <p className="text-start text-[8px] font-TimesNewRoman">{ethnicity?.code}</p>
-        </div>
-      </div>
-      <div className="flex gap-1 items-center">
-        <div>
-          <p className="text-start text-[8px]">ສັນຊາດ:</p>
-          <p className="text-start text-[8px] font-TimesNewRoman">Nationality:</p>
-        </div>
-        <div>
-          <p className="text-start text-[8px]">{nationality?.nationality}</p>
+          <p className="text-start text-[7pt] font-TimesNewRoman leading-[1.2] text-[#000000]">{ethnicity?.code}</p>
         </div>
       </div>
-      <div className="flex gap-1 items-center print:mb-[5px]">
+      <div className="items-center pb-[2px] text-[#000000]">
         <div>
-          <p className="text-start text-[8px]">ເລກທີ:</p>
-          <p className="text-start text-[8px] font-TimesNewRoman">No:</p>
+          <p className="flex text-start text-[7pt] leading-[1.2]">ສັນຊາດ/
+            <p className="text-start text-[7pt] font-TimesNewRoman">Nationality:</p>
+          </p>
         </div>
         <div>
-          <p className="text-start text-[8px]">{identityNumber}</p>
+          <p className="text-start text-[7pt] font-TimesNewRoman leading-[1.2]">{nationality?.nationality}</p>
         </div>
       </div>
-      <div className="">
-        <p className="text-center text-[7px] leading-tight tracking-tighter">
-                    ກົມຕໍາຫຼວດຄຸ້ມຄອງຄົນຕ່າງປະເທດ
-        </p>
-        <p className="text-center text-[7px] leading-tight tracking-tighter font-TimesNewRoman">
-                    Department of Foreigner Control
-        </p>
+      <div className="items-center print:mb-[5px] pb-[2px] text-[#000000]">
+        <div>
+          <p className="flex text-start text-[7pt] leading-[1.2]">ເລກທີ/<p className="text-[8px] font-TimesNewRoman">No:</p></p>
+          {/* <p className="text-start text-[8px] font-TimesNewRoman">No:</p> */}
+        </div>
+        <div>
+          <p className="text-start text-[8px] leading-[1.2]">{identityNumber}</p>
+        </div>
       </div>
     </div>
   );

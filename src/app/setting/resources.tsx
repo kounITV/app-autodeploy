@@ -90,7 +90,13 @@ export const resources: IResources[] = [
         icon: <PrinterCheck size={18} />,
       },
       {
-        title: "ລາຍການຜູ້ທີ່ອອກບັດແລ້ວ",
+        title: "ພິມຫລັງບັດ",
+        subject: "back-printing",
+        href: "/back-printing",
+        icon: <PrinterCheck size={18} />,
+      },
+      {
+        title: "ລາຍການຜູ້ທີ່ພິມບັດແລ້ວ",
         subject: "printed",
         href: "/printed",
         icon: <Check size={18} />,

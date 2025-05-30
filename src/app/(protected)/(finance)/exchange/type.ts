@@ -5,6 +5,7 @@ export interface IExchangeRate {
     name: string
     baseCurrencyId: number;
     targetCurrencyId: number;
+    rate: number,
     rateBase: number;
     ratePolice: number;
     startDate: string;

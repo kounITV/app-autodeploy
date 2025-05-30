@@ -10,23 +10,23 @@ export const profileFormSchema = z.object({
     required: false,
     message: "ກະລຸນາເລືອກຮູບພາບ",
   }).or(z.string()),
-  identityIssueDate: z.date().or(z.string()).refine((value) => { return value != null && value !== ""; }, { message: "ກະລຸນາເລືອກບັດປະຈຳຕົວລົງວັນ" }),
-  firstName: z.string().min(1, { message: "ກະລຸນາໃສ່ຊື່ຂອງທ່ານ" }),
-  lastName: z.string().min(1, { message: "ກະລຸນາໃສ່ນາມສະກຸນຂອງທ່ານ" }),
+  identityIssueDate: z.date().or(z.string()).refine((value) => { return value != null && value !== ""; }, { message: "ກະລຸນາລະບຸວັນທີອອກເອກະສານ" }),
+  firstName: z.string().min(1, { message: "ກະລຸນາໃສ່ຊື່" }),
+  lastName: z.string().min(1, { message: "ກະລຸນາໃສ່ນາມສະກຸນ" }),
   phoneNumber: z
     .string()
-    .min(1, { message: "ກະລຸນາໃສ່ເບີໂທຂອງທ່ານ" })
+    .min(1, { message: "ກະລຸນາໃສ່ເບີໂທຂອງບຸກຄົນນີ້" })
     .regex(/^\d{8,}$/, { message: "ເບີໂທທີ່ປ້ອນບໍ່ຖືກຕ້ອງ" }),
   dateOfBirth: z
     .union([z.date(), z.string()])
     .refine((value) => value !== null && value !== "", {
       message: "ວັນເດືອນປີເກີດ",
     }),
-  gender: z.string().min(1, { message: "ກະລຸນາໃສ່ເພດທ່ານ" }),
-  nationalityId: z.number().min(1, { message: "ກະລຸນາໃສ່ປະເພດທ່ານ" }),
-  ethnicityId: z.number().min(1, { message: "ກະລຸນາໃສ່ປະເພດທ່ານ" }),
+  gender: z.string().min(1, { message: "ກະລຸນາລະບຸເພດ" }),
+  nationalityId: z.number().min(1, { message: "ກະລຸນາເລືອກສັນຊາດ" }),
+  ethnicityId: z.number().min(1, { message: "ກະລຸນາເລືອກເຊື້ອຊາດ" }),
   identityType: z.string().min(1, { message: "ກະລຸນາໃສ່ປະເພດອອກເອກະສານ" }),
-  identityNumber: z.string().min(1, { message: "ກະລຸນາໃສ່ໝາຍເລກບັດປະຈຳຕົວ" }),
+  identityNumber: z.string().min(1, { message: "ກະລຸນາໃສ່ເລກທີເອກະສານ" }),
   identityExpiryDate: z
     .union([z.date(), z.string()])
     .refine((value) => value !== null && value !== "", {
@@ -36,7 +36,7 @@ export const profileFormSchema = z.object({
   currentDistrict: z.number().min(1, { message: "ກະລຸນາໃສ່ເມືອງປັດຈຸບັນ" }),
   currentVillageId: z.number().min(1, { message: "ກະລຸນາເລືອກບ້ານ" }),
   overseasCountryId: z.number().min(1, { message: "ກະລຸນາໃສ່ປະເທດ" }),
-  overseasProvince: z.string().min(1, { message: "ກະລຸນາໃສ່ແຂວງປັດຈຸບັນ" }),
+  overseasProvince: z.string().min(1, { message: "ກະລຸນາໃສ່ແຂວງ" }),
   applicationNumber: z.string().min(1, { message: "ກະລຸນາໃສ່ເອກທິຟອມ" }),
 })
 export const defaultValues = {
@@ -56,5 +56,6 @@ export const defaultValues = {
   currentVillageId: 0,
   overseasCountryId: 1,
   overseasDistrict: "",
+  overseasProvince: "",
   applicationNumber: "",
 };
