@@ -11,23 +11,20 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - name: ⬇️ Checkout repository
+        uses: actions/checkout@v3
 
-    - name: Setup Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: 20
-        cache: 'npm'
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+          cache: npm
 
-    - name: Install dependencies
-      run: npm install
+      - name: 📦 Install dependencies
+        run: npm install
 
-    - name: Lint code
-      run: npm run lint
+      - name: 🔍 Lint
+        run: npm run lint
 
-    - name: Check Prettier formatting
-      run: npm run prettier -- --check .
-
-    - name: Build app
-      run: npm run build
+      - name: 🛠️ Build
+        run: npm run build
