@@ -33,7 +33,7 @@ jobs:
           npm install
 
       - name: Lint
-        run: npx eslint . --ext .ts,.tsx,.js,.jsx
+        run: npn run lint
 
       - name: Build
         run: npm run build
