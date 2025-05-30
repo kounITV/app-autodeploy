@@ -28,7 +28,9 @@ jobs:
           cache: npm
 
       - name: 📦 Install dependencies
-        run: npm install
+        run: |
+          npm install -g husky
+          npm install
 
       - name: 🔍 Lint
         run: npm run lint
