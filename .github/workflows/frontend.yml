@@ -10,6 +10,13 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    env:
+      NODE_ENV: production
+      NEXTAUTH_URL: https://fn.skillgener.com
+      NEXT_PUBLIC_API_URL: https://fn.skillgener.com
+      NEXT_PUBLIC_API_BASE_URL: https://bn.skillgener.com
+      AUTH_SECRET: ${{ secrets.AUTH_SECRET }}
+
     steps:
       - name: ⬇️ Checkout repository
         uses: actions/checkout@v3
